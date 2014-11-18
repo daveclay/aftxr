@@ -1,0 +1,83 @@
+@media screen and (max-width: 600px) {
+    .about {
+        width: 96% !important;
+    }
+    .logo img {
+        width: 100%;
+        height: auto;
+    }
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: black;
+    background-image:url('../skin.jpg');
+    /* background-size: cover; */
+    background-size: 100%;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    font-family: 'Abel', sans-serif;
+    color: #586667;
+}
+a {
+    color: #99acad;
+    text-decoration: none;
+}
+a:hover {
+    color: #aacccd;
+    text-decoration: underline;
+}
+hr {
+    display: block;
+    height: 1px;
+    border: 0; border-top: 1px solid #27393a;
+}
+.content {
+    margin: 2px;
+    width: 100%;
+    height: 100%;
+}
+.logo {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+.logo img {
+}
+.about {
+    position: relative;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 4px;
+    padding-right: 4px;
+    text-shadow: 3px 3px 3px rgba(0, 0, 0, 1);
+}
+.show {
+    font-family: 'Abel', sans-serif;
+    font-size: 48px;
+    color: #455A5F;
+    line-height: 90%;
+    text-transform: uppercase;
+    text-shadow: 3px 3px 4px rgba(0, 0, 0, .7), 1px 1px 1px rgba(0, 0, 0, .7), 1px 1px 3px rgba(0, 0, 0, .6);
+}
+.show-text {
+    font-size: 18px;
+}
+.blocked {
+}
+.smaller {
+    padding: 3px;
+    font-size: 23px;
+    background-color: rgba(0, 0, 0, .7);
+}
+.text {
+    padding: 3px;
+    font-size: 15px;
+    background-color: rgba(0, 0, 0, .7);
+}
+/*
+font-family: 'Ropa Sans', sans-serif;
+font-family: 'Metrophobic', sans-serif;
+*/
