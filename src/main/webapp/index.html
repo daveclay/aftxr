@@ -14,7 +14,7 @@
 <div id="logo">aftxr.com</div>
 <div id="stage"></div>
 <div id="progress"><div id="meter"></div></div>
-<div id="data"></div>
+<div id="data"><div id="conform"></div></div>
 <div id="interact"></div>
 <div id="info"></div>
 
@@ -25,6 +25,7 @@
     var origin = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
     var logo = document.getElementById("logo");
     var stage = document.getElementById("stage");
+    var conform = document.getElementById("conform");
     var data = document.getElementById("data");
     var info = document.getElementById("info");
     var interact = document.getElementById("interact");
@@ -70,11 +71,17 @@
         gene.style.transform = "translate3d(5px, " + (y - 6) + "px, 0)";
         gene.style.opacity = .85;
         if (Math.random() > .1) {
+            var geneticInfo;
+            if (Math.random() > .5) {
+                geneticInfo = "MXCH" + Math.round(Math.random() * 10) + "NE"
+            } else {
+                geneticInfo = "SOMATIC." + Math.round(Math.random() * 10);
+            }
             gene.className = "gene";
-            gene.innerText = "MXCH" + Math.round(Math.random() * 10) + "NE.GENE+" + Math.round(Math.random() * 300);
+            gene.innerText = geneticInfo + ".GENE+" + Math.round(Math.random() * 300);
         } else {
             gene.className = "gene genetic-error";
-            gene.innerText = "ERROR/" + Math.round(Math.random() * 10) + ".V!RUS+" + Math.round(Math.random() * 30);
+            gene.innerText = "ERR0R/" + Math.round(Math.random() * 10) + ".V/RUS+" + Math.round(Math.random() * 30);
             flicker(gene);
         }
 

@@ -69,6 +69,7 @@ body {
     }
 }
 
+#conform,
 #interact,
 .line,
 .gene {
@@ -97,6 +98,15 @@ body {
     background-color: black;
     padding: 2px;
     border: 1px solid #333333;
+}
+
+#conform {
+    font-size: .4em;
+    color: #586667;
+    top: 10px;
+    left: 120px;
+    opacity: .4;
+    width: 33%;
 }
 
 a {
