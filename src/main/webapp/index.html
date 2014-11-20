@@ -14,6 +14,7 @@
 <div id="logo">aftxr.com</div>
 <div id="stage"></div>
 <div id="progress"><div id="meter"></div></div>
+<div id="data"></div>
 <div id="info"></div>
 
 <script type="text/javascript">
@@ -22,10 +23,12 @@
     var counter = 0;
     var logo = document.getElementById("logo");
     var stage = document.getElementById("stage");
+    var data = document.getElementById("data");
     var info = document.getElementById("info");
     var progress = document.getElementById("progress");
     var meter = document.getElementById("meter");
-
+    var availableLines = [];
+    var genes = [];
 
     function mutate() {
         setTimeout(function() {
@@ -39,12 +42,27 @@
         for (var i = 0; i < imgs.length; i++) {
             var img = imgs[i];
             if (img.className == 'bit') {
-                move(img);
+                mutateComponent(img);
             }
         }
     }
 
-    function move(img) {
+    function identifyComponent(gene, line, x, y, length, angle) {
+        gene.style.transform = "translate3d(5px, " + (y - 6) + "px, 0)";
+        gene.style.opacity = 1;
+        if (Math.random() > .1) {
+            gene.innerText = "MXCH" + Math.round(Math.random() * 10) + "NE.GENE+" + Math.round(Math.random() * 300);
+        } else {
+            gene.innerText = "ERROR/" + Math.round(Math.random() * 10) + ".VIRUS+" + Math.round(Math.random() * 30);
+        }
+
+        line.style.transformOrigin = x + "px " + y + "px";
+        line.style.transform = "rotate(" + angle + "deg) translate3d(" + x + "px, " + y + "px, 0)";
+        line.style.width = length + "px";
+        line.style.opacity = 1;
+    }
+
+    function mutateComponent(img) {
 
         var entityLocation = {
             y: function() {
@@ -65,12 +83,35 @@
             var scale = (Math.round(Math.random() * 70) + 30) / 100;
             var rotate = Math.round(Math.random() * 180);
             var opacity = (Math.round(Math.random() * 95) + 5) / 100;
-            var x = entityLocation.x() + "px";
-            var y = entityLocation.y() + "px";
-            img.style.transformOrigin = x + " " + y;
-            img.style.transform = "rotate(" + rotate + "deg) scale(" + scale + ") translate3d(" + x + ", " + y + ", 0)";
+            var x = entityLocation.x();
+            var y = entityLocation.y();
+            img.style.transformOrigin = x + "px " + y + "px";
+            img.style.transform = "rotate(" + rotate + "deg) scale(" + scale + ") translate3d(" + x + "px, " + y + "px, 0)";
             img.style.opacity = opacity;
             img.style.zIndex = Math.round(Math.random() * 100);
+
+            if (Math.random() < .02 && availableLines.length > 0) {
+                var line = availableLines.pop();
+                var gene = genes.pop();
+                setTimeout(function() {
+                    var px = 100;
+                    var py = Math.round(Math.random() * (window.innerHeight - 100)) + 50;
+                    var dx = x - px;
+                    var dy = y - py;
+                    var length = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+                    var radians = Math.atan2(dy, dx);
+                    var angle = radians * (180 / Math.PI);
+                    console.log(angle, length);
+                    identifyComponent(gene, line, px, py, length, angle);
+                    setTimeout(function() {
+                        line.style.opacity = 0;
+                        gene.style.opacity = 0;
+                        availableLines.push(line);
+                        genes.push(gene);
+                    }, 3000);
+                }, 400);
+            }
+
         }, Math.round(Math.random() * 500));
     }
 
@@ -95,6 +136,18 @@
                 updateProgress();
             };
             stage.appendChild(img);
+        }
+
+        for (var i = 0; i < 3; i++) {
+            var line = document.createElement("div");
+            line.className = "line";
+            data.appendChild(line);
+            availableLines.push(line);
+
+            var gene = document.createElement("div");
+            gene.className = "gene";
+            data.appendChild(gene);
+            genes.push(gene);
         }
     }
 
