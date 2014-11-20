@@ -15,6 +15,7 @@
 <div id="stage"></div>
 <div id="progress"><div id="meter"></div></div>
 <div id="data"></div>
+<div id="interact"></div>
 <div id="info"></div>
 
 <script type="text/javascript">
@@ -26,6 +27,8 @@
     var stage = document.getElementById("stage");
     var data = document.getElementById("data");
     var info = document.getElementById("info");
+    var interact = document.getElementById("interact");
+    var interactTimeout = null;
     var progress = document.getElementById("progress");
     var meter = document.getElementById("meter");
     var availableLines = [];
@@ -144,6 +147,18 @@
         }
     }
 
+    function setOrigin() {
+        if (interactTimeout) {
+            clearTimeout(interactTimeout);
+        }
+        interact.style.transform = "translate3d(" + origin.x + "px, " + origin.y + "px, 0)";
+        interact.style.opacity = .6;
+        interact.innerText = "[" + origin.x + "," + origin.y + "]";
+        interactTimeout = setTimeout(function() {
+            interact.style.opacity = 0;
+        }, 2000);
+    }
+
     function initialize() {
         for (var i = 1; i <= bits; i++) {
             var img = document.createElement("img");
@@ -177,6 +192,7 @@
             x: event.pageX,
             y: event.pageY
         };
+        setOrigin();
     });
 
     setInterval(function() {

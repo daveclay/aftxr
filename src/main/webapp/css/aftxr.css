@@ -69,6 +69,7 @@ body {
     }
 }
 
+#interact,
 .line,
 .gene {
     position: absolute;
@@ -88,6 +89,14 @@ body {
 .line {
     height: 1px;
     background-color: #586667;
+}
+
+#interact {
+    font-size: .7em;
+    color: #586667;
+    background-color: black;
+    padding: 2px;
+    border: 1px solid #333333;
 }
 
 a {
