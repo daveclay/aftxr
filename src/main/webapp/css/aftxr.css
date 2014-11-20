@@ -1,25 +1,69 @@
-@media screen and (max-width: 600px) {
-    .about {
-        width: 96% !important;
-    }
-    .logo img {
-        width: 100%;
-        height: auto;
-    }
-}
-
 body {
     margin: 0;
     padding: 0;
-    background-color: black;
-    background-image:url('../skin.jpg');
-    /* background-size: cover; */
-    background-size: 100%;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
     font-family: 'Abel', sans-serif;
+    background-color: black;
     color: #586667;
 }
+
+#logo {
+    position: fixed;
+    top: 2px;
+    left: 4px;
+    font-family: 'Abel', sans-serif;
+    text-transform: uppercase;
+}
+
+#stage {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    -webkit-transform-origin: 350px 350px;
+    -webkit-animation-name: rotate;
+    -webkit-animation-duration: 900s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    overflow: hidden;
+}
+
+#info {
+    position: absolute;
+    top: 55%;
+    left: 45%;
+}
+
+#progress,
+#meter {
+    position: absolute;
+    left: 0;
+    height: 10px;
+}
+
+#progress {
+    top: 50%;
+    background-color: black;
+    width: 100%;
+}
+
+#meter {
+    background-color: #696973;
+}
+
+.bit {
+    position: absolute;
+    transition: all 700ms cubic-bezier(.13,.67,.84,.12);
+    opacity: 0;
+}
+
+@-webkit-keyframes rotate {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
 a {
     color: #99acad;
     text-decoration: none;
@@ -28,56 +72,3 @@ a:hover {
     color: #aacccd;
     text-decoration: underline;
 }
-hr {
-    display: block;
-    height: 1px;
-    border: 0; border-top: 1px solid #27393a;
-}
-.content {
-    margin: 2px;
-    width: 100%;
-    height: 100%;
-}
-.logo {
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-}
-.logo img {
-}
-.about {
-    position: relative;
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 4px;
-    padding-right: 4px;
-    text-shadow: 3px 3px 3px rgba(0, 0, 0, 1);
-}
-.show {
-    font-family: 'Abel', sans-serif;
-    font-size: 48px;
-    color: #455A5F;
-    line-height: 90%;
-    text-transform: uppercase;
-    text-shadow: 3px 3px 4px rgba(0, 0, 0, .7), 1px 1px 1px rgba(0, 0, 0, .7), 1px 1px 3px rgba(0, 0, 0, .6);
-}
-.show-text {
-    font-size: 18px;
-}
-.blocked {
-}
-.smaller {
-    padding: 3px;
-    font-size: 23px;
-    background-color: rgba(0, 0, 0, .7);
-}
-.text {
-    padding: 3px;
-    font-size: 15px;
-    background-color: rgba(0, 0, 0, .7);
-}
-/*
-font-family: 'Ropa Sans', sans-serif;
-font-family: 'Metrophobic', sans-serif;
-*/

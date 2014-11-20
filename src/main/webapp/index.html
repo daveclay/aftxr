@@ -11,60 +11,95 @@
     <link rel="stylesheet" type="text/css" href="css/aftxr.css"/>
 </head>
 <body>
-<div class="content">
-    <div class="logo"><img src="logo.png"></div>
-    <div class="about">
-        <hr/>
-        <div class="show">
-            AUG/4/14
-        </div>
-        <div class="text">
-            The next album, <u>Within Tolerances</u>, is really almost there... but I struggle with the endgame. I'm always aiming for perfection, but that leads me down dark paths of tedious tweaking for hours leading to burnout and having to step away for a couple days. I had a good night though. There's about 15 songs slated for this album. There's another 10 that didn't make the cut. I also struggle, during those bouts of burnout, with the deep yearning to go work on those other 10; those little pieces of unpolished beauty that have so much potential. But, no - focus man.
-        </div>
-        <hr/>
-        <div class="show">
-            JULY/23/14
-        </div>
-        <div class="text">Successful first show. A few people asked me afterwards how much of that was "live". I use Traktor and two F1 controllers to trigger different instruments and different sections in each song. I also had the Maschine hooked up for live drumming and sample triggering, and a Graphite midi keyboard to play some of the lead synths. When not playing live drums and keys, I was mixing in loops and parts of songs with Traktor's faders. Oh, and all that is routed through Traktor and back through Maschine for an added master FX channel, which had The Finger with some twisted distortion and glitch settings I could add as well. I was looking for something half-live performance and half-DJ setup, something that'd give me options to improvise when I wanted but still be able to perform the songs. It didn't go perfectly, but what fun is that?
-        </div>
-        <hr/>
-        <div class="show">
-            PERFORMING LIVE
-            <br/>
-            WEDNESDAY/ JULY/23
-            <br/>
-            The&nbsp;Highline / 9:00PM
-            <br/>
-            <span class="smaller">Mechanismus/Musikwerks</span>
-            <br/>
-            Alter&nbsp;Der&nbsp;Ruin
-            <br/>
-            Mr.&nbsp;Kitty
-            <br/>
-                <span class="smaller">
-                DJ Savik
-                <br/>
-                DJ Omega Brain
-                <br/>
-                DJ Seraphim
-                </span>
-        </div>
-        <hr/>
-        <div class="text">
-            aftxr is an industrial electronic project by <a href="http://retorx.net">artist</a>, engineer, and musician <a href="http://www.daveclay.com">daveclay</a>.
-            The debut release The Faithful is available on <a href="http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewAlbum?id=839658172">iTunes</a>, <a href="http://www.amazon.com/s/ref=ntt_srch_drd_B00IYYZQ76?ie=UTF8&field-keywords=After%20Heavy%20Industries&index=digital-music&search-type=ss">Amazon</a>, <a href="https://play.google.com/store/music/album?id=B5pn6kdhiyhggxmzwaiv345ukvm&tid=song-T3flfpasthkhnyvxi72d6adkg3a&hl=en">Google Play</a>, and <a href="https://soundcloud.com/dave-clay/sets/the-faithful">Soundcloud</a>.
-        </div>
-        <hr/>
-    </div>
-</div>
+<div id="logo">aftxr.com</div>
+<div id="stage"></div>
+<div id="progress"><div id="meter"></div></div>
+<div id="info"></div>
+
 <script type="text/javascript">
-    window.addEventListener("load",function() {
-        // Set a timeout...
+
+    var bits = 125;
+    var counter = 0;
+    var logo = document.getElementById("logo");
+    var stage = document.getElementById("stage");
+    var info = document.getElementById("info");
+    var progress = document.getElementById("progress");
+    var meter = document.getElementById("meter");
+
+
+    function mutate() {
         setTimeout(function() {
-            // Hide the address bar!
-            window.scrollTo(0, 1);
-        }, 0);
-    });
+            moveAll();
+            mutate();
+        }, Math.round(Math.random() * 2000) + 2000);
+    }
+
+    function moveAll() {
+        var imgs = document.getElementsByTagName("img");
+        for (var i = 0; i < imgs.length; i++) {
+            var img = imgs[i];
+            if (img.className == 'bit') {
+                move(img);
+            }
+        }
+    }
+
+    function move(img) {
+
+        var entityLocation = {
+            _top: window.innerHeight / 3,
+            _left: window.innerWidth / 3,
+            top: function() {
+                return Math.round(Math.random() * this._top);
+            },
+            left: function() {
+                return Math.round(Math.random() * this._left);
+            }
+        };
+
+        setTimeout(function() {
+            img.style.top = entityLocation.top();
+            img.style.left = entityLocation.left();
+            var scale = (Math.round(Math.random() * 70) + 30) / 100;
+            var rotate = Math.round(Math.random() * 180);
+            var opacity = (Math.round(Math.random() * 95) + 5) / 100;
+            img.style.transform = "rotate(" + rotate + "deg) scale(" + scale + ")";
+            img.style.opacity = opacity;
+            img.style.zIndex = Math.round(Math.random() * 100);
+        }, Math.round(Math.random() * 500));
+    }
+
+    function updateProgress() {
+        counter++;
+        var percent = Math.round(counter / bits * 100) + "%";
+        meter.style.width = percent;
+        info.innerText = percent;
+        if (percent === "100%") {
+            meter.style.display = "none";
+            progress.style.display = "none";
+            info.style.display = "none";
+        }
+    }
+
+    function initialize() {
+        for (var i = 1; i <= bits; i++) {
+            var img = document.createElement("img");
+            img.src = "images/orig-bits/"+ i + ".png";
+            img.className = "bit";
+            img.onload = function() {
+                updateProgress();
+            };
+            stage.appendChild(img);
+        }
+    }
+
+    initialize();
+    moveAll();
+    mutate();
+
+    setInterval(function() {
+        logo.innerText = "aftxr.+" + Math.round(Math.random() * 100000);
+    }, 100);
 </script>
 </body>
 </html>
