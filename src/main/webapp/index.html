@@ -49,9 +49,9 @@
         var entityLocation = {
             y: function() {
                 var center = window.innerHeight / 2;
-                var range = window.innerHeight / 6;
-                var amount = range / 3 - Math.round(Math.random() * range);
-                return center + amount;
+                var range = window.innerHeight / 4;
+                var amount = range / 2 - Math.round(Math.random() * range);
+                return center + amount - 80;
             },
             x: function() {
                 var center = window.innerWidth / 2;
