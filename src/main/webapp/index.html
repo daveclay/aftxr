@@ -47,23 +47,28 @@
     function move(img) {
 
         var entityLocation = {
-            _top: window.innerHeight / 3,
-            _left: window.innerWidth / 3,
-            top: function() {
-                return Math.round(Math.random() * this._top);
+            y: function() {
+                var center = window.innerHeight / 2;
+                var range = window.innerHeight / 6;
+                var amount = range / 3 - Math.round(Math.random() * range);
+                return center + amount;
             },
-            left: function() {
-                return Math.round(Math.random() * this._left);
+            x: function() {
+                var center = window.innerWidth / 2;
+                var range = window.innerWidth / 3;
+                var amount = range / 2 - Math.round(Math.random() * range);
+                return center + amount;
             }
         };
 
         setTimeout(function() {
-            img.style.top = entityLocation.top();
-            img.style.left = entityLocation.left();
             var scale = (Math.round(Math.random() * 70) + 30) / 100;
             var rotate = Math.round(Math.random() * 180);
             var opacity = (Math.round(Math.random() * 95) + 5) / 100;
-            img.style.transform = "rotate(" + rotate + "deg) scale(" + scale + ")";
+            var x = entityLocation.x() + "px";
+            var y = entityLocation.y() + "px";
+            img.style.transformOrigin = x + " " + y;
+            img.style.transform = "rotate(" + rotate + "deg) scale(" + scale + ") translate3d(" + x + ", " + y + ", 0)";
             img.style.opacity = opacity;
             img.style.zIndex = Math.round(Math.random() * 100);
         }, Math.round(Math.random() * 500));
