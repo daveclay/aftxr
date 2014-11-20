@@ -21,6 +21,7 @@
 
     var bits = 125;
     var counter = 0;
+    var origin = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
     var logo = document.getElementById("logo");
     var stage = document.getElementById("stage");
     var data = document.getElementById("data");
@@ -47,13 +48,31 @@
         }
     }
 
+    var c = 0;
+
+    function flicker(el) {
+        setTimeout(function() {
+            el.style.display = Math.random() > .45 ? "block" : "none";
+            c++;
+            if (c > 100) {
+                c = 0;
+                el.style.display = "block";
+            } else {
+                flicker(el);
+            }
+        }, 30);
+    }
+
     function identifyComponent(gene, line, x, y, length, angle) {
         gene.style.transform = "translate3d(5px, " + (y - 6) + "px, 0)";
-        gene.style.opacity = 1;
+        gene.style.opacity = .85;
         if (Math.random() > .1) {
+            gene.className = "gene";
             gene.innerText = "MXCH" + Math.round(Math.random() * 10) + "NE.GENE+" + Math.round(Math.random() * 300);
         } else {
-            gene.innerText = "ERROR/" + Math.round(Math.random() * 10) + ".VIRUS+" + Math.round(Math.random() * 30);
+            gene.className = "gene genetic-error";
+            gene.innerText = "ERROR/" + Math.round(Math.random() * 10) + ".V!RUS+" + Math.round(Math.random() * 30);
+            flicker(gene);
         }
 
         line.style.transformOrigin = x + "px " + y + "px";
@@ -66,16 +85,14 @@
 
         var entityLocation = {
             y: function() {
-                var center = window.innerHeight / 2;
                 var range = window.innerHeight / 4;
                 var amount = range / 2 - Math.round(Math.random() * range);
-                return center + amount - 80;
+                return origin.y + amount - 80;
             },
             x: function() {
-                var center = window.innerWidth / 2;
                 var range = window.innerWidth / 3;
                 var amount = range / 2 - Math.round(Math.random() * range);
-                return center + amount;
+                return origin.x + amount;
             }
         };
 
@@ -154,6 +171,13 @@
     initialize();
     moveAll();
     mutate();
+
+    document.addEventListener("click", function(event) {
+        origin = {
+            x: event.pageX,
+            y: event.pageY
+        };
+    });
 
     setInterval(function() {
         logo.innerText = "aftxr.+" + Math.round(Math.random() * 100000);

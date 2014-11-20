@@ -69,16 +69,25 @@ body {
     }
 }
 
-.line {
+.line,
+.gene {
     position: absolute;
-    height: 1px;
-    background-color: #586667;
     transition: opacity 200ms ease-in;
     opacity: 0;
 }
 
 .gene {
     font-size: .7em;
+    background-color: black;
+}
+
+.genetic-error {
+    color: red;
+}
+
+.line {
+    height: 1px;
+    background-color: #586667;
 }
 
 a {
