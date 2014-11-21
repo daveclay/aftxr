@@ -22,6 +22,7 @@
 
     var bits = 125;
     var counter = 0;
+    var identities = 3;
     var origin = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
     var logo = document.getElementById("logo");
     var stage = document.getElementById("stage");
@@ -33,11 +34,20 @@
     var progress = document.getElementById("progress");
     var meter = document.getElementById("meter");
     var availableLines = [];
+    var usedLines = [];
     var genes = [];
+    var fear = false;
 
     function mutate() {
         setTimeout(function() {
             moveAll();
+
+            if (Math.random() < .1) {
+                operand();
+            } else if (fear) {
+                remission();
+            }
+
             mutate();
         }, Math.round(Math.random() * 3000) + 3000);
     }
@@ -67,10 +77,10 @@
         }, 30);
     }
 
-    function identifyComponent(gene, line, x, y, length, angle) {
-        gene.style.transform = "translate3d(5px, " + (y - 6) + "px, 0)";
-        gene.style.opacity = .85;
-        if (Math.random() > .1) {
+    function identifyComponent(gene, line, length, angle) {
+        gene.style.transform = "translate3d(5px, " + (line.y - 6) + "px, 0)";
+        gene.style.opacity = .7;
+        if (!fear || Math.random() > .1) {
             var geneticInfo;
             if (Math.random() > .5) {
                 geneticInfo = "MXCH" + Math.round(Math.random() * 10) + "NE"
@@ -85,10 +95,11 @@
             flicker(gene);
         }
 
-        line.style.transformOrigin = x + "px " + y + "px";
-        line.style.transform = "rotate(" + angle + "deg) translate3d(" + x + "px, " + y + "px, 0)";
-        line.style.width = length + "px";
-        line.style.opacity = 1;
+        var element = line.element;
+        element.style.transformOrigin = line.x + "px " + line.y + "px";
+        element.style.transform = "rotate(" + angle + "deg) translate3d(" + line.x + "px, " + line.y + "px, 0)";
+        element.style.width = length + "px";
+        element.style.opacity = .5;
     }
 
     function mutateComponent(img) {
@@ -121,25 +132,44 @@
                 var line = availableLines.pop();
                 var gene = genes.pop();
                 setTimeout(function() {
-                    var px = 100;
-                    var py = Math.round(Math.random() * (window.innerHeight - 100)) + 50;
-                    var dx = x - px;
-                    var dy = y - py;
+                    var min = 50;
+                    for (var i = 0; i < usedLines.length; i++) {
+                        var sy = usedLines[i].targetY;
+                        if (sy > min) {
+                            min = sy;
+                        }
+                    }
+
+                    var max = (window.innerHeight - min);
+
+                    line.x = 90;
+                    line.y = Math.round(Math.random() * max) + min;
+                    line.targetX = x;
+                    line.targetY = y;
+
+                    var dx = img.getBoundingClientRect().left - line.x;
+                    var dy = y - line.y;
+
                     var length = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
                     var radians = Math.atan2(dy, dx);
                     var angle = radians * (180 / Math.PI);
-                    console.log(angle, length);
-                    identifyComponent(gene, line, px, py, length, angle);
+                    usedLines.push(line);
+                    identifyComponent(gene, line, length, angle);
                     setTimeout(function() {
-                        line.style.opacity = 0;
-                        gene.style.opacity = 0;
-                        availableLines.push(line);
-                        genes.push(gene);
+                        clearIdentity(gene, line);
                     }, 3000);
                 }, 400);
             }
 
         }, Math.round(Math.random() * 500));
+    }
+
+    function clearIdentity(gene, line) {
+        line.element.style.opacity = 0;
+        gene.style.opacity = 0;
+        availableLines.push(line);
+        usedLines.splice(usedLines.indexOf(line), 1);
+        genes.push(gene);
     }
 
     function updateProgress() {
@@ -161,27 +191,50 @@
         interact.style.transform = "translate3d(" + origin.x + "px, " + origin.y + "px, 0)";
         interact.style.opacity = .6;
         interact.innerText = "[" + origin.x + "," + origin.y + "]";
+        flicker(interact);
+        stage.style.tranformOrigin = origin.x + "px " + origin.y + "px";
         interactTimeout = setTimeout(function() {
             interact.style.opacity = 0;
         }, 2000);
     }
 
+    function remission() {
+        fear = false;
+        for (var i = 1; i <= bits; i++) {
+            var img = document.getElementById("bit" + i);
+            img.src = "images/blue-bits/"+ i + ".png";
+        }
+    }
+
+    function operand() {
+        fear = true;
+        for (var i = 1; i <= bits; i++) {
+            var img = document.getElementById("bit" + i);
+            img.src = "images/rust-bits/"+ i + ".png";
+        }
+    }
+
     function initialize() {
         for (var i = 1; i <= bits; i++) {
             var img = document.createElement("img");
-            img.src = "images/orig-bits/"+ i + ".png";
+            img.src = "images/blue-bits/"+ i + ".png";
             img.className = "bit";
+            img.setAttribute("id", "bit" + i);
             img.onload = function() {
                 updateProgress();
             };
             stage.appendChild(img);
         }
 
-        for (var i = 0; i < 3; i++) {
+        for (var i = 0; i < identities; i++) {
             var line = document.createElement("div");
             line.className = "line";
             data.appendChild(line);
-            availableLines.push(line);
+            availableLines.push({
+                element: line,
+                x: 0,
+                y: 0
+            });
 
             var gene = document.createElement("div");
             gene.className = "gene";

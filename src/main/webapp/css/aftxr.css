@@ -79,8 +79,9 @@ body {
 }
 
 .gene {
-    font-size: .7em;
+    font-size: .5em;
     background-color: black;
+    color: #586667;
 }
 
 .genetic-error {
@@ -89,7 +90,7 @@ body {
 
 .line {
     height: 1px;
-    background-color: #586667;
+    background-color: #282832;
 }
 
 #interact {
@@ -105,7 +106,7 @@ body {
     color: #586667;
     top: 10px;
     left: 120px;
-    opacity: .4;
+    opacity: .3;
     width: 33%;
 }
 
