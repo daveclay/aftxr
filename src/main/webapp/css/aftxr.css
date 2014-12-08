@@ -24,11 +24,10 @@ body {
     height: 100%;
 }
 
-#stage {
-    -webkit-animation-name: rotate;
-    -webkit-animation-duration: 900s;
-    -webkit-animation-iteration-count: infinite;
-    -webkit-animation-timing-function: linear;
+.stage {
+    animation: rotate 900s linear 0s infinite;
+    -webkit-animation: rotate 900s linear 0s infinite;
+    border: 1px solid red;
 }
 
 #info {
@@ -56,15 +55,16 @@ body {
 
 .bit {
     position: absolute;
+    -webkit-transition: all 700ms cubic-bezier(.13,.47,.84,.12);
     transition: all 700ms cubic-bezier(.13,.47,.84,.12);
     opacity: 0;
 }
 
 @-webkit-keyframes rotate {
-    from {
+    0% {
         -webkit-transform: rotate(0deg);
     }
-    to {
+    100% {
         -webkit-transform: rotate(360deg);
     }
 }
@@ -74,6 +74,7 @@ body {
 .line,
 .gene {
     position: absolute;
+    -webkit-transition: opacity 200ms ease-in;
     transition: opacity 200ms ease-in;
     opacity: 0;
 }
