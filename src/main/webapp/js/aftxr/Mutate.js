@@ -234,8 +234,4 @@
         setOrigin();
     });
 
-    setInterval(function() {
-        logo.innerText = "aftxr.+" + Math.round(Math.random() * 100000);
-    }, 100);
-
 })(window.CSSUtils);
