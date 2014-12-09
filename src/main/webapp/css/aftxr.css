@@ -3,7 +3,7 @@ body {
     padding: 0;
     font-family: 'Abel', sans-serif;
     background-color: black;
-    color: #98C6C7;
+    color: #7C9697;
     overflow: hidden;
     font-size: .8em;
 }
@@ -12,8 +12,21 @@ body {
 #footer {
     width: 100%;
     padding: 1em;
-    background-color: rgba(38, 41, 42, .7);
+    background-color: rgba(0, 0, 0, .3);
     z-index: 1000;
+}
+
+#header::after,
+#footer::after {
+    content: "";
+    background: url('../images/noise3.jpg');
+    opacity: 0.3;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;
 }
 
 #header {
@@ -69,6 +82,7 @@ body {
     position: absolute;
     left: 0;
     height: 10px;
+    z-index: 1000;
 }
 
 #progress {
