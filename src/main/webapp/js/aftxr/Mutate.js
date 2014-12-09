@@ -86,12 +86,12 @@
 
         var entityLocation = {
             y: function() {
-                var range = window.innerHeight / 5;
+                var range = 250;
                 var amount = range / 2 - Math.round(Math.random() * range);
                 return origin.y + amount - 80;
             },
             x: function() {
-                var range = window.innerWidth / 4;
+                var range = 250;
                 var amount = range / 2 - Math.round(Math.random() * range);
                 return origin.x + amount;
             }

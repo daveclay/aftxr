@@ -8,6 +8,12 @@ body {
     font-size: .8em;
 }
 
+.soundcloud {
+    margin: 1px;
+    border-bottom: 1px solid #353F3F;
+    max-width: 310px;
+}
+
 #header,
 #footer {
     width: 100%;
@@ -38,7 +44,9 @@ body {
 
 #header .content {
     padding: .2em;
-    width: 95%;
+    width: 60%;
+    display: inline-block;
+    vertical-align: top;
 }
 
 #footer {
@@ -49,11 +57,11 @@ body {
 }
 
 #logo {
+    display: inline-block;
     text-transform: uppercase;
     font-size: 2em;
-    float: left;
     padding-right: 1em;
-    height: 2em; /* match header */
+    vertical-align: top;
 }
 
 #stage,
