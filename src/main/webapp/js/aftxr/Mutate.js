@@ -86,12 +86,12 @@
 
         var entityLocation = {
             y: function() {
-                var range = window.innerHeight / 4;
+                var range = window.innerHeight / 5;
                 var amount = range / 2 - Math.round(Math.random() * range);
                 return origin.y + amount - 80;
             },
             x: function() {
-                var range = window.innerWidth / 3;
+                var range = window.innerWidth / 4;
                 var amount = range / 2 - Math.round(Math.random() * range);
                 return origin.x + amount;
             }
@@ -100,7 +100,7 @@
         setTimeout(function() {
             var scale = (Math.round(Math.random() * 70) + 10) / 100;
             var rotate = Math.round(Math.random() * 180);
-            var opacity = (Math.round(Math.random() * 95) + 5) / 100;
+            var opacity = (Math.round(Math.random() * 95) + 5) / 200;
             var x = entityLocation.x();
             var y = entityLocation.y();
             img.style[css.transformOrigin] = x + "px " + y + "px";
