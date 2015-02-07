@@ -59,7 +59,7 @@
 
     function identifyComponent(gene, line, length, angle) {
         gene.style[css.transform] = "translate3d(5px, " + (line.y - 6) + "px, 0)";
-        gene.style.opacity = .7;
+        gene.style.opacity = .9;
         if (!fear || Math.random() > .1) {
             var geneticInfo;
             if (Math.random() > .5) {
@@ -79,7 +79,7 @@
         element.style[css.transformOrigin] = line.x + "px " + line.y + "px";
         element.style[css.transform] = "rotate(" + angle + "deg) translate3d(" + line.x + "px, " + line.y + "px, 0)";
         element.style.width = length + "px";
-        element.style.opacity = .5;
+        element.style.opacity = .8;
     }
 
     function mutateComponent(img) {
@@ -100,7 +100,7 @@
         setTimeout(function() {
             var scale = (Math.round(Math.random() * 70) + 10) / 100;
             var rotate = Math.round(Math.random() * 180);
-            var opacity = (Math.round(Math.random() * 95) + 5) / 200;
+            var opacity = Math.random() * .9;
             var x = entityLocation.x();
             var y = entityLocation.y();
             img.style[css.transformOrigin] = x + "px " + y + "px";

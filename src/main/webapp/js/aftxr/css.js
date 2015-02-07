@@ -18,12 +18,12 @@
 
     function prefixStyle(style) {
         if ( vendor === '' ) return style;
-
         style = style.charAt(0).toUpperCase() + style.substr(1);
         return vendor + style;
-    }
+    };
 
     var CSSUtils = {
+        prefixStyle: prefixStyle,
         cssVendor: vendor ? '-' + vendor.toLowerCase() + '-' : '',
         transformOrigin: prefixStyle('transformOrigin'),
         transform: prefixStyle('transform'),
