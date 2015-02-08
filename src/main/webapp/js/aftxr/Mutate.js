@@ -1,6 +1,7 @@
 (function(css) {
 
-    var bits = 125;
+    var imgBits = 125;
+    var bits = 135;
     var counter = 0;
     var identities = 3;
     var origin = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
@@ -100,7 +101,7 @@
         setTimeout(function() {
             var scale = (Math.round(Math.random() * 70) + 10) / 100;
             var rotate = Math.round(Math.random() * 180);
-            var opacity = Math.random() * .9;
+            var opacity = Math.random() * .7;
             var x = entityLocation.x();
             var y = entityLocation.y();
             img.style[css.transformOrigin] = x + "px " + y + "px";
@@ -194,9 +195,11 @@
     }
 
     function initialize() {
-        for (var i = 1; i <= bits; i++) {
+        var i;
+        for (i = 1; i <= bits; i++) {
             var img = document.createElement("img");
-            img.src = "images/blue-bits/"+ i + ".png";
+            var imgIdx = (i % imgBits) + 1;
+            img.src = "images/blue-bits/" + imgIdx + ".png";
             img.className = "bit";
             img.setAttribute("id", "bit" + i);
             img.onload = function() {
@@ -205,7 +208,7 @@
             stage.appendChild(img);
         }
 
-        for (var i = 0; i < identities; i++) {
+        for (i = 0; i < identities; i++) {
             var line = document.createElement("div");
             line.className = "line";
             data.appendChild(line);
@@ -226,6 +229,7 @@
     moveAll();
     mutate();
 
+    /*
     document.addEventListener("click", function(event) {
         origin = {
             x: event.pageX,
@@ -233,5 +237,6 @@
         };
         setOrigin();
     });
+    */
 
 })(window.CSSUtils);
