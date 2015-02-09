@@ -4,14 +4,12 @@
     var bits = 135;
     var counter = 0;
     var identities = 3;
-    var origin = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
     var logo = document.getElementById("logo");
     var stage = document.getElementById("stage");
     var conform = document.getElementById("conform");
     var data = document.getElementById("data");
     var info = document.getElementById("info");
     var interact = document.getElementById("interact");
-    var interactTimeout = null;
     var progress = document.getElementById("progress");
     var meter = document.getElementById("meter");
     var availableLines = [];
@@ -30,7 +28,7 @@
             }
 
             mutate();
-        }, Math.round(Math.random() * 3000) + 3000);
+        }, Math.round(Math.random() * 4000) + 3000);
     }
 
     function moveAll() {
@@ -84,6 +82,7 @@
     }
 
     function mutateComponent(img) {
+        var origin = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
 
         var entityLocation = {
             y: function() {
@@ -165,19 +164,6 @@
         }
     }
 
-    function setOrigin() {
-        if (interactTimeout) {
-            clearTimeout(interactTimeout);
-        }
-        interact.style[css.transform] = "translate3d(" + origin.x + "px, " + origin.y + "px, 0)";
-        interact.style.opacity = .6;
-        interact.innerText = "[" + origin.x + "," + origin.y + "]";
-        flicker(interact);
-        interactTimeout = setTimeout(function() {
-            interact.style.opacity = 0;
-        }, 2000);
-    }
-
     function remission() {
         fear = false;
         for (var i = 1; i <= bits; i++) {
@@ -228,15 +214,5 @@
     initialize();
     moveAll();
     mutate();
-
-    /*
-    document.addEventListener("click", function(event) {
-        origin = {
-            x: event.pageX,
-            y: event.pageY
-        };
-        setOrigin();
-    });
-    */
 
 })(window.CSSUtils);

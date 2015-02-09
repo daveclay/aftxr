@@ -72,13 +72,13 @@ and (max-device-width : 480px) {
 and (min-width : 481px) {
 
     .panelLink {
-        width: 100px;
-        height: 100px;
-        background-size: 100px;
+        width: 60px;
+        height: 60px;
+        background-size: 60px;
     }
 
     #footer {
-        padding: 1em;
+        /* padding: 1em; */
     }
 }
 
@@ -141,7 +141,7 @@ and (min-width : 481px) {
 }
 
 #footer {
-    border-top: 1px solid black;
+    border-top: 1px solid #324444;
     position: fixed;
     bottom: 0px;
     width: 100%;
@@ -174,10 +174,9 @@ and (min-width : 481px) {
     height: 100%;
 }
 
-.stage {
+#stage {
     animation: rotate 900s linear 0s infinite;
     -webkit-animation: rotate 900s linear 0s infinite;
-    border: 1px solid red;
 }
 
 #info {
@@ -271,7 +270,7 @@ a {
     color: #99acad;
     text-decoration: none;
     height: 100%;
-    transform: translateY(100%);
+    transform: translate3d(0, 100%, 0);
 }
 
 .closePanel:hover,
