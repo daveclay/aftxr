@@ -2,10 +2,20 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Abel', sans-serif;
-    background-color: #333A3A;
+    background-color: black;
     color: #7C9697;
     overflow: hidden;
-    font-size: .8em;
+    font-size: 0.8em;
+}
+
+.bold{
+    color: #a9bcbc;
+    font-weight: bold;
+    /* text-decoration: underline; */
+}
+
+.albumTitle {
+    color: orangered;
 }
 
 .soundcloud {
@@ -13,7 +23,17 @@ body {
     max-width: 320px;
 }
 
-.playlist {
+#infoPanelLink {
+    background-color: black;
+}
+
+.panelLink div {
+    color: #506060;
+    border-bottom: 1px solid #324343;
+    background-color: black;
+}
+
+.panel {
     top: 100%;
     height: 100%;
     width: 100%;
@@ -21,29 +41,65 @@ body {
     position: absolute;
     background-color: rgba(0, 0, 0, .7);
     z-index: 900;
+    position: absolute;
+    overflow-y: scroll;
 }
 
-.playlist p {
+.panel p {
     padding-right: 1em;
     padding-left: 1em;
+    padding-bottom: 1em;
+    border-bottom: 1px solid #233333;
 }
 
-.closePlaylist {
-    cursor: pointer;
+@media only screen
+and (min-device-width : 320px)
+and (max-device-width : 480px) {
+
+    .panelLink {
+        height: 50px;
+        width: 50px;
+        background-size: 50px;
+    }
+
+    #footer {
+        padding: 2px;
+    }
+
 }
 
-.closePlaylist:hover {
-    color: white;
+@media only screen
+and (min-width : 481px) {
+
+    .panelLink {
+        width: 100px;
+        height: 100px;
+        background-size: 100px;
+    }
+
+    #footer {
+        padding: 1em;
+    }
 }
 
-.albumCover {
-    height: 100px;
-    width: 100px;
+.panelLink {
     display: inline-block;
-    background-size: 100px 100px;
     background-repeat: no-repeat;
     background-position: bottom left;
     cursor: pointer;
+}
+
+#aboutPanelLink {
+    background: url('../images/noise.jpg') no-repeat top left;
+    background-size: 190px;
+}
+
+#contactPanelLink {
+    background: url('../images/noise9.jpg') no-repeat bottom left;
+}
+
+#infoPanelLink {
+    background: url('../images/noise6.jpg') no-repeat bottom left;
 }
 
 #theFaithful {
@@ -57,8 +113,7 @@ body {
 #header,
 #footer {
     width: 100%;
-    padding: 1em;
-    background-color: rgba(0, 0, 0, .3);
+    background-color: rgba(51, 71, 71, .5);
     z-index: 1000;
 }
 
@@ -78,9 +133,9 @@ body {
     border-bottom: 1px solid black;;
 }
 
-#footer .content {
-    padding: .2em;
-    width: 70%;
+.footer-text-container {
+    padding-left: 0.5em;
+    width: 48%;
     display: inline-block;
     vertical-align: top;
 }
@@ -99,12 +154,14 @@ body {
     text-transform: uppercase;
     font-family: "Allerta Stencil";
     font-size: 30vw;
-    margin-top: -2vw;
-    color: rgba(0, 0, 0, .5);
+    font-weight: bold;
+    padding-top: 0;
+    margin-top: -7vw;
+    color: #233333;
     text-align: center;
     vertical-align: top;
     width: 100%;
-    z-index: 900;
+    /* z-index: 900; */
     position: absolute;
 }
 
@@ -205,10 +262,19 @@ body {
     width: 33%;
 }
 
+.closePanelItem {
+}
+
+.closePanel,
 a {
+    cursor: pointer;
     color: #99acad;
     text-decoration: none;
+    height: 100%;
+    transform: translateY(100%);
 }
+
+.closePanel:hover,
 a:hover {
     color: #aacccd;
     text-decoration: underline;

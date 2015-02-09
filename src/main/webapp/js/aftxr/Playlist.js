@@ -1,46 +1,53 @@
 (function(css) {
-    var theFaithfulPlaylist = $(".theFaithful.playlist");
-    var withinTolerancesPlaylist = $(".withinTolerances.playlist");
-    var closePlaylistButton = $('.closePlaylist');
 
-    var theFaithful = $("#theFaithful");
-    var withinTolerances = $("#withinTolerances");
+    var closePanelButton = $('.closePanel');
     var footer = $("#footer");
+    var panels = $('.panel');
+    var links = $('.panelLink');
 
-    var currentPlaylist;
+    var currentPanel;
+    var panelsByName = {};
 
-    function open(playlist) {
-        playlist.velocity({ top: 0 }, { duration: 100 });
-        playlist.data("open", true);
+    $.each(panels, function(index, panel) {
+        panel = $(panel);
+        panelsByName[panel.data("panel")] = panel;
+    });
+
+    $.each(links, function(index, link) {
+        link = $(link);
+        link.click(function() {
+            linkClicked(link);
+        })
+    });
+
+    function linkClicked(link) {
+        toggle(panelsByName[link.data("panel")]);
     }
 
-    function close(playlist) {
-        playlist.velocity({ top: "100%" }, { duration: 100 });
-        playlist.data("open", false);
+    function open(panel) {
+        panel.velocity({ top: 0 }, { duration: 100 });
+        panel.data("open", true);
     }
 
-    function toggle(playlist) {
-        if (currentPlaylist != null && currentPlaylist != playlist) {
-            close(currentPlaylist);
+    function close(panel) {
+        panel.velocity({ top: "100%" }, { duration: 100 });
+        panel.data("open", false);
+    }
+
+    function toggle(panel) {
+        if (currentPanel != null && currentPanel != panel) {
+            close(currentPanel);
         }
-        if (playlist.data("open")) {
-            close(playlist);
+        if (panel.data("open")) {
+            close(panel);
         } else {
-            currentPlaylist = playlist;
-            open(playlist);
+            currentPanel = panel;
+            open(panel);
         }
     }
 
-    withinTolerances.click(function() {
-        toggle(withinTolerancesPlaylist);
-    });
-
-    theFaithful.click(function() {
-        toggle(theFaithfulPlaylist);
-    });
-
-    closePlaylistButton.click(function() {
-        if (currentPlaylist != null) close(currentPlaylist);
+    closePanelButton.click(function() {
+        if (currentPanel != null) close(currentPanel);
     });
 
 })(window.CSSUtils);
