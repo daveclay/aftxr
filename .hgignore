@@ -1,5 +1,6 @@
-target
-.idea
-aftxr-web.iml
+^target$
+\/target$
+^\.idea$
+\.iml$
 art
 .*.DS_Store
