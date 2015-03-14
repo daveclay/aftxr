@@ -205,8 +205,8 @@ and (min-width : 481px) {
 
 .bit {
     position: absolute;
-    -webkit-transition: all 4s ease-in;/* cubic-bezier(.13,.47,.84,.12); */
-    transition: all 4s ease-in; /* cubic-bezier(.13,.47,.84,.12); */
+    -webkit-transition: all 5s /* ease-in;*/ cubic-bezier(.13,.47,.84,.02);
+    transition: all 5s /* ease-in; */ cubic-bezier(.13,.47,.84,.02);
     opacity: 0;
 }
 
@@ -231,7 +231,7 @@ and (min-width : 481px) {
 
 .gene {
     font-size: .5em;
-    background-color: black;
+    background-color: rgba(0, 0, 0, .3);
     color: #586667;
 }
 

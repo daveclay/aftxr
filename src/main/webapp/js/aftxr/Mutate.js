@@ -28,7 +28,7 @@
             }
 
             mutate();
-        }, Math.round(Math.random() * 4000) + 3000);
+        }, Math.round(Math.random() * 4000) + 8000);
     }
 
     function moveAll() {
@@ -56,8 +56,8 @@
         }, 30);
     }
 
-    function identifyComponent(gene, line, length, angle) {
-        gene.style[css.transform] = "translate3d(5px, " + (line.y - 6) + "px, 0)";
+    function identifyComponent(gene, line, x, y) {
+        gene.style[css.transform] = "translate3d(" + x + "px, " + y + "px, 0)";
         gene.style.opacity = .9;
         if (!fear || Math.random() > .1) {
             var geneticInfo;
@@ -73,12 +73,6 @@
             gene.innerText = "ERR0R/" + Math.round(Math.random() * 10) + ".V/RUS+" + Math.round(Math.random() * 30);
             flicker(gene);
         }
-
-        var element = line.element;
-        element.style[css.transformOrigin] = line.x + "px " + line.y + "px";
-        element.style[css.transform] = "rotate(" + angle + "deg) translate3d(" + line.x + "px, " + line.y + "px, 0)";
-        element.style.width = length + "px";
-        element.style.opacity = .8;
     }
 
     function mutateComponent(img) {
@@ -112,30 +106,8 @@
                 var line = availableLines.pop();
                 var gene = genes.pop();
                 setTimeout(function() {
-                    var min = 50;
-                    for (var i = 0; i < usedLines.length; i++) {
-                        var sy = usedLines[i].targetY;
-                        if (sy > min) {
-                            min = sy;
-                        }
-                    }
-
-                    var maxY = (window.innerHeight - min);
-                    var maxX = (window.innerWidth - min);
-
-                    line.x = Math.round(Math.random() * maxY) + min;
-                    line.y = Math.round(Math.random() * maxY) + min;
-                    line.targetX = x;
-                    line.targetY = y;
-
-                    var dx = img.getBoundingClientRect().left - line.x;
-                    var dy = y - line.y;
-
-                    var length = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
-                    var radians = Math.atan2(dy, dx);
-                    var angle = radians * (180 / Math.PI);
                     usedLines.push(line);
-                    identifyComponent(gene, line, length, angle);
+                    identifyComponent(gene, line, x, y);
                     setTimeout(function() {
                         clearIdentity(gene, line);
                     }, 3000);
@@ -195,6 +167,9 @@
             img.onload = function() {
                 updateProgress();
             };
+            var x = window.innerWidth / 2.3;
+            var y = window.innerHeight / 2.3;
+            img.style[css.transform] = "translate3d(" + x + "px, " + y + "px, 0)";
             stage.appendChild(img);
         }
 
