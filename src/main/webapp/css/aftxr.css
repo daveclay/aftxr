@@ -29,8 +29,10 @@ body {
 
 .panelLink div {
     color: #506060;
-    border-bottom: 1px solid #324343;
+    border: 1px solid #324343;
     background-color: black;
+    text-align: center;
+    bottom: 0px;
 }
 
 .panel {
@@ -90,16 +92,16 @@ and (min-width : 481px) {
 }
 
 #aboutPanelLink {
-    background: url('../images/noise.jpg') no-repeat top left;
+    /* background: url('../images/noise.jpg') no-repeat top left; */
     background-size: 190px;
 }
 
 #contactPanelLink {
-    background: url('../images/noise9.jpg') no-repeat bottom left;
+    /* background: url('../images/noise9.jpg') no-repeat bottom left; */
 }
 
 #infoPanelLink {
-    background: url('../images/noise6.jpg') no-repeat bottom left;
+    /* background: url('../images/noise6.jpg') no-repeat bottom left; */
 }
 
 #theFaithful {
@@ -147,6 +149,7 @@ and (min-width : 481px) {
     width: 100%;
     -webkit-transition: all 500ms ease-out;
     transition: all 500ms ease-out;
+    padding-left: 2px;
 }
 
 #logo {
