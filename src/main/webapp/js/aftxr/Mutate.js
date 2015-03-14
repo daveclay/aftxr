@@ -100,7 +100,7 @@
         setTimeout(function() {
             var scale = (Math.round(Math.random() * 70) + 10) / 100;
             var rotate = Math.round(Math.random() * 180);
-            var opacity = Math.random() * .7;
+            var opacity = Math.random() * .4;
             var x = entityLocation.x();
             var y = entityLocation.y();
             img.style[css.transformOrigin] = x + "px " + y + "px";
@@ -120,10 +120,11 @@
                         }
                     }
 
-                    var max = (window.innerHeight - min);
+                    var maxY = (window.innerHeight - min);
+                    var maxX = (window.innerWidth - min);
 
-                    line.x = 90;
-                    line.y = Math.round(Math.random() * max) + min;
+                    line.x = Math.round(Math.random() * maxY) + min;
+                    line.y = Math.round(Math.random() * maxY) + min;
                     line.targetX = x;
                     line.targetY = y;
 
@@ -168,7 +169,8 @@
         fear = false;
         for (var i = 1; i <= bits; i++) {
             var img = document.getElementById("bit" + i);
-            img.src = "images/blue-bits/"+ i + ".png";
+            var src = img.getAttribute("data-bit");
+            img.src = "images/blue-bits/"+ src + ".png";
         }
     }
 
@@ -176,7 +178,8 @@
         fear = true;
         for (var i = 1; i <= bits; i++) {
             var img = document.getElementById("bit" + i);
-            img.src = "images/rust-bits/"+ i + ".png";
+            var src = img.getAttribute("data-bit");
+            img.src = "images/rust-bits/"+ src + ".png";
         }
     }
 
@@ -187,6 +190,7 @@
             var imgIdx = (i % imgBits) + 1;
             img.src = "images/blue-bits/" + imgIdx + ".png";
             img.className = "bit";
+            img.setAttribute("data-bit", "" + imgIdx);
             img.setAttribute("id", "bit" + i);
             img.onload = function() {
                 updateProgress();

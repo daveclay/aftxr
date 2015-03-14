@@ -42,7 +42,7 @@ body {
     background-color: rgba(0, 0, 0, .7);
     z-index: 900;
     position: absolute;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .panel p {
@@ -113,7 +113,7 @@ and (min-width : 481px) {
 #header,
 #footer {
     width: 100%;
-    background-color: rgba(51, 71, 71, .5);
+    /* background-color: rgba(51, 71, 71, .5); */
     z-index: 1000;
 }
 
@@ -141,9 +141,9 @@ and (min-width : 481px) {
 }
 
 #footer {
-    border-top: 1px solid #324444;
+    /* border-top: 1px solid #324444; */
     position: fixed;
-    bottom: 0px;
+    bottom: 0;
     width: 100%;
     -webkit-transition: all 500ms ease-out;
     transition: all 500ms ease-out;
@@ -157,7 +157,7 @@ and (min-width : 481px) {
     font-weight: bold;
     padding-top: 0;
     margin-top: -7vw;
-    color: #233333;
+    color: #021211;
     text-align: center;
     vertical-align: top;
     width: 100%;
@@ -205,8 +205,8 @@ and (min-width : 481px) {
 
 .bit {
     position: absolute;
-    -webkit-transition: all 700ms cubic-bezier(.13,.47,.84,.12);
-    transition: all 700ms cubic-bezier(.13,.47,.84,.12);
+    -webkit-transition: all 4s ease-in;/* cubic-bezier(.13,.47,.84,.12); */
+    transition: all 4s ease-in; /* cubic-bezier(.13,.47,.84,.12); */
     opacity: 0;
 }
 
