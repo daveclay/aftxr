@@ -41,21 +41,6 @@
         }
     }
 
-    var c = 0;
-
-    function flicker(el) {
-        setTimeout(function() {
-            el.style.display = Math.random() > .45 ? "block" : "none";
-            c++;
-            if (c > 100) {
-                c = 0;
-                el.style.display = "block";
-            } else {
-                flicker(el);
-            }
-        }, 30);
-    }
-
     function identifyComponent(gene, line, x, y) {
         gene.style[css.transform] = "translate3d(" + x + "px, " + y + "px, 0)";
         gene.style.opacity = .9;
@@ -71,7 +56,6 @@
         } else {
             gene.className = "gene genetic-error";
             gene.innerText = "ERR0R/" + Math.round(Math.random() * 10) + ".V/RUS+" + Math.round(Math.random() * 30);
-            flicker(gene);
         }
     }
 
@@ -127,10 +111,10 @@
 
     function updateProgress() {
         counter++;
-        var percent = Math.round(counter / bits * 100) + "%";
-        meter.style.width = percent;
-        info.innerText = percent;
-        if (percent === "100%") {
+        var percent = Math.round(counter / bits * 100);
+        meter.style.width = percent + "%";
+        info.innerText = percent + "%";
+        if (percent >= 100) {
             meter.style.display = "none";
             progress.style.display = "none";
             info.style.display = "none";
