@@ -12,8 +12,7 @@
     var interact = document.getElementById("interact");
     var progress = document.getElementById("progress");
     var meter = document.getElementById("meter");
-    var availableLines = [];
-    var usedLines = [];
+    var activeGenes = [];
     var genes = [];
     var fear = false;
 
@@ -41,7 +40,7 @@
         }
     }
 
-    function identifyComponent(gene, line, x, y) {
+    function identifyComponent(gene, x, y) {
         gene.style[css.transform] = "translate3d(" + x + "px, " + y + "px, 0)";
         gene.style.opacity = .9;
         if (!fear || Math.random() > .1) {
@@ -86,14 +85,13 @@
             img.style.opacity = opacity;
             img.style.zIndex = Math.round(Math.random() * 100);
 
-            if (Math.random() < .02 && availableLines.length > 0) {
-                var line = availableLines.pop();
+            if (Math.random() < .02 && genes.length > 0) {
                 var gene = genes.pop();
                 setTimeout(function() {
-                    usedLines.push(line);
-                    identifyComponent(gene, line, x, y);
+                    activeGenes.push(gene);
+                    identifyComponent(gene, x, y);
                     setTimeout(function() {
-                        clearIdentity(gene, line);
+                        clearIdentity(gene);
                     }, 3000);
                 }, 400);
             }
@@ -101,11 +99,9 @@
         }, Math.round(Math.random() * 500));
     }
 
-    function clearIdentity(gene, line) {
-        line.element.style.opacity = 0;
+    function clearIdentity(gene) {
         gene.style.opacity = 0;
-        availableLines.push(line);
-        usedLines.splice(usedLines.indexOf(line), 1);
+        activeGenes.splice(activeGenes.indexOf(gene), 1);
         genes.push(gene);
     }
 
@@ -158,15 +154,6 @@
         }
 
         for (i = 0; i < identities; i++) {
-            var line = document.createElement("div");
-            line.className = "line";
-            data.appendChild(line);
-            availableLines.push({
-                element: line,
-                x: 0,
-                y: 0
-            });
-
             var gene = document.createElement("div");
             gene.className = "gene";
             data.appendChild(gene);
