@@ -2,7 +2,8 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Abel', sans-serif;
-    background-color: black;
+    background-image: url('../images/3840x2400.jpg');
+    background-size: cover;
     color: #7C9697;
     overflow: hidden;
     font-size: 0.8em;
@@ -160,7 +161,7 @@ and (min-width : 481px) {
     font-weight: bold;
     padding-top: 0;
     margin-top: -7vw;
-    color: #021211;
+    color: #091916;
     text-align: center;
     vertical-align: top;
     width: 100%;

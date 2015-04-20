@@ -147,8 +147,8 @@
             img.onload = function() {
                 updateProgress();
             };
-            var x = window.innerWidth / 2.3;
-            var y = window.innerHeight / 2.3;
+            var x = window.innerWidth / 3;
+            var y = window.innerHeight / 3;
             img.style[css.transform] = "translate3d(" + x + "px, " + y + "px, 0)";
             stage.appendChild(img);
         }

@@ -16,18 +16,18 @@
         return false;
     })();
 
-    function prefixStyle(style) {
+    function prefixTrassform(style) {
         if ( vendor === '' ) return style;
         style = style.charAt(0).toUpperCase() + style.substr(1);
         return vendor + style;
     };
 
     var CSSUtils = {
-        prefixStyle: prefixStyle,
+        prefixStyle: prefixTrassform,
         cssVendor: vendor ? '-' + vendor.toLowerCase() + '-' : '',
-        transformOrigin: prefixStyle('transformOrigin'),
-        transform: prefixStyle('transform'),
-        transitionDuration: prefixStyle('transitionDuration'),
+        transformOrigin: prefixTrassform('transformOrigin'),
+        transform: prefixTrassform('transform'),
+        transitionDuration: prefixTrassform('transitionDuration'),
 
         transitionEndEvent: (function () {
             if ( vendor === false ) return false;
