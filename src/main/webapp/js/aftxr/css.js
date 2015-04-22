@@ -1,4 +1,27 @@
 (function() {
+    var vendorProperties = {
+        '': {
+            transitionEnd: 'transitionend',
+            radialGradient: 'radial-gradient(ellipse at center, %s)'
+        },
+        'webkit': {
+            transitionEnd: 'webkitTransitionEnd',
+            radialGradient: '-webkit-radial-gradient(center, ellipse cover, %s)'
+        },
+        'Moz': {
+            transitionEnd: 'transitionend',
+            radialGradient: '-moz-radial-gradient(center, ellipse cover, %s)'
+        },
+        'O': {
+            transitionEnd: 'oTransitionEnd',
+            radialGradient: '-o-radial-gradient(center, ellipse cover, %s)'
+        },
+        'ms': {
+            transitionEnd: 'MSTransitionEnd',
+            radialGradient: '-ms-radial-gradient(center, ellipse cover, %s)'
+        }
+    };
+
     var vendor = (function () {
         var vendors = 't,webkitT,MozT,msT,OT'.split(','),
             dummyStyle = document.createElement('div').style,
@@ -16,11 +39,14 @@
         return false;
     })();
 
+    function filterGradient(colors) {
+    }
+
     function prefixTrassform(style) {
         if ( vendor === '' ) return style;
         style = style.charAt(0).toUpperCase() + style.substr(1);
         return vendor + style;
-    };
+    }
 
     var CSSUtils = {
         prefixStyle: prefixTrassform,
@@ -31,15 +57,7 @@
 
         transitionEndEvent: (function () {
             if ( vendor === false ) return false;
-            var transitionEnd = {
-                ''			: 'transitionend',
-                'webkit'	: 'webkitTransitionEnd',
-                'Moz'		: 'transitionend',
-                'O'			: 'oTransitionEnd',
-                'ms'		: 'MSTransitionEnd'
-            };
-
-            return transitionEnd[vendor];
+            return vendorProperties[vendor].transitionEnd
         })()
     };
 
