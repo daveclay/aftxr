@@ -210,8 +210,8 @@ and (min-width : 481px) {
 
 .bit {
     position: absolute;
-    -webkit-transition: all 5s /* ease-in;*/ cubic-bezier(.13,.47,.84,.02);
-    transition: all 5s /* ease-in; */ cubic-bezier(.13,.47,.84,.02);
+    -webkit-transition: all 5s cubic-bezier(0.98, 0.1, 0.28, 1.01);
+    transition: all 5s cubic-bezier(0.98, 0.1, 0.28, 1.01);
     opacity: 0;
 }
 
