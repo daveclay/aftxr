@@ -38,21 +38,19 @@
             this.origin = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
         },
 
-        nextY: function() {
-            var range = 250;
+        nextY: function(range) {
             var amount = range / 2 - Math.round(Math.random() * range);
             return this.origin.y + amount - 80;
         },
 
-        nextX: function() {
-            var range = 250;
+        nextX: function(range) {
             var amount = range / 2 - Math.round(Math.random() * range);
             return this.origin.x + amount;
         },
 
-        nextEntityLocation: function() {
-            var x = this.nextX();
-            var y = this.nextY();
+        nextEntityLocation: function(range) {
+            var x = this.nextX(range);
+            var y = this.nextY(range);
             return { x: x, y: y };
         }
     });
@@ -81,11 +79,12 @@
             return within;
         },
 
-        transmitLocation: function() {
+        potentialLocation: function(gene) {
             var bounded = true;
             var target;
             while (bounded) {
-                target = this.body.nextEntityLocation();
+                target = this.body.nextEntityLocation(300);
+                target.dimension = gene.dimension;
                 if ( ! this.withinAllActiveGenes(target)) {
                     bounded = false;
                 }
@@ -104,7 +103,7 @@
 
         activate: function(gene) {
             gene.next();
-            var location = this.transmitLocation();
+            var location = this.potentialLocation(gene);
             gene.dominant(location);
             this.activeGenes.push(gene);
             setTimeout(function() {
@@ -122,14 +121,20 @@
     var Gene = Class.extnd({
         init: function() {
             this.container = $("<div class='gene'/>");
+            this.marker = $("<span class='genetic-marker'/>");
+            var geneticContent = $("<span class='genetic-content'/>");
+
             this.codexPart = $("<span class='codex'/>");
             this.nucleotidePart = $("<span class='nucleotide'/>");
             this.offsetPart = $("<span class='offset'/>");
 
-            this.codexPart.appendTo(this.container);
-            this.nucleotidePart.appendTo(this.container);
-            this.container.append("<br/>");
-            this.offsetPart.appendTo(this.container);
+            this.marker.appendTo(this.container);
+            geneticContent.appendTo(this.container);
+
+            this.codexPart.appendTo(geneticContent);
+            this.nucleotidePart.appendTo(geneticContent);
+            geneticContent.append("<br/>");
+            this.offsetPart.appendTo(geneticContent);
         },
 
         attach: function(element) {
@@ -139,7 +144,7 @@
         recess: function() {
             this.container.css({
                 opacity: 0
-            })
+            });
         },
 
         dominant: function(location) {
@@ -153,10 +158,10 @@
         },
 
         isWithin: function(target) {
-            return target.x + this.dimension.width < this.location.x &&
-                    target.x > this.location.x + this.dimension.width &&
-                    target.y + this.dimension.height < this.location.y &&
-                    target.y > this.location.y + this.dimension.height;
+            return target.x + target.dimension.width > this.location.x &&
+                    target.x < this.location.x + this.dimension.width &&
+                    target.y + target.dimension.height > this.location.y &&
+                    target.y < this.location.y + this.dimension.height;
         },
 
         next: function() {
@@ -206,7 +211,7 @@
     }
 
     function mutateComponent(img) {
-        var entityLocation = body.nextEntityLocation();
+        var entityLocation = body.nextEntityLocation(250);
         setTimeout(function() {
             var scale = (Math.round(Math.random() * 70) + 10) / 100;
             var rotate = Math.round(Math.random() * 360);

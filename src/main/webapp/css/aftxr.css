@@ -242,11 +242,31 @@ and (min-width : 481px) {
 .gene {
     font-size: .5em;
     background-color: rgba(0, 0, 0, .3);
+    border: 1px solid rgba(90, 100, 100, .7);
     color: #586667;
 }
 
 .genetic-error {
-    color: red;
+    color: rgba(190, 10, 10, .7) !important;
+    border: 1px solid rgba(190, 10, 10, .7) !important;
+}
+
+.genetic-error .genetic-marker {
+    border-right: 1px solid rgba(190, 10, 10, .7) !important;
+}
+
+.genetic-marker {
+    float: left;
+    width: 24px;
+    height: 24px;
+    border-right: 1px solid rgba(90, 100, 100, .7);
+}
+
+.genetic-content {
+    float:right;
+    font-size: 7px;
+    padding-right: 2px;
+    padding-left: 2px;
 }
 
 .line {
