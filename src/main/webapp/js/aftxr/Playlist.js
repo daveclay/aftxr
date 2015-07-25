@@ -50,4 +50,17 @@
         if (currentPanel != null) close(currentPanel);
     });
 
+    function recept() {
+        $.each($('.reception'), function(i, elem) {
+            if (Math.random() > 0.8) {
+                $(elem).hide();
+            } else {
+                $(elem).show();
+            }
+        });
+        setTimeout(function() { recept() }, Math.random() * 50);
+    }
+
+    recept();
+
 })(window.CSSUtils);

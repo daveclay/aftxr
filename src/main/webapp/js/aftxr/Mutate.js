@@ -1,9 +1,22 @@
 (function(css) {
 
+    // https://github.com/borisschapira/preloadr
+    // https://github.com/DominicTobias/extnd
+
+    Array.prototype.sample = function(items) {
+        if ( ! items) {
+            items = 1;
+        }
+        var result = [];
+        for (var i = 0; i < items; i++) {
+            result.push(this[Math.floor(Math.random() * this.length)]);
+        }
+        return result;
+    };
+
     var imgBits = 125;
     var bits = 135;
     var counter = 0;
-    var identities = 3;
     var logo = document.getElementById("logo");
     var stage = document.getElementById("stage");
     var conform = document.getElementById("conform");
@@ -12,9 +25,161 @@
     var interact = document.getElementById("interact");
     var progress = document.getElementById("progress");
     var meter = document.getElementById("meter");
-    var activeGenes = [];
-    var genes = [];
     var fear = false;
+    var codex = ["MXCHINE", "MXCH!NE", "SOMAT!C"];
+    var nucleotides = [ "cytos!ne", "guan:ne", "aden!ne", "thxmine"];
+    var offsets = ["reset", "evalMutation", "transmit", "send", "void", "function", "kernel", "opt", "aux", "in", "format",
+                   "map", "TX", "RX", "violation", "reject", "abort", "abandon", "create", "join", "include", "export"];
+    var dna;
+    var body;
+
+    var Body = Class.extnd({
+        init: function() {
+            this.origin = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+        },
+
+        nextY: function() {
+            var range = 250;
+            var amount = range / 2 - Math.round(Math.random() * range);
+            return this.origin.y + amount - 80;
+        },
+
+        nextX: function() {
+            var range = 250;
+            var amount = range / 2 - Math.round(Math.random() * range);
+            return this.origin.x + amount;
+        },
+
+        nextEntityLocation: function() {
+            var x = this.nextX();
+            var y = this.nextY();
+            return { x: x, y: y };
+        }
+    });
+
+    var DNA = Class.extnd({
+        init: function(body) {
+            var identities = 3;
+            this.body = body;
+            this.genes = [];
+            this.activeGenes = [];
+            for (var i = 0; i < identities; i++) {
+                var gene = new Gene();
+                gene.attach(data);
+                this.genes.push(gene);
+            }
+        },
+
+        withinAllActiveGenes: function(target) {
+            var within = false;
+            for (var i = 0; i < this.activeGenes.length; i++) {
+                if (this.activeGenes[i].isWithin(target)) {
+                    within = true;
+                    break;
+                }
+            }
+            return within;
+        },
+
+        transmitLocation: function() {
+            var bounded = true;
+            var target;
+            while (bounded) {
+                target = this.body.nextEntityLocation();
+                if ( ! this.withinAllActiveGenes(target)) {
+                    bounded = false;
+                }
+            }
+            return target;
+        },
+
+        identifyMutation: function() {
+            if (Math.random() < .03 && this.genes.length > 0) {
+                var gene = this.genes.pop();
+                setTimeout(function() {
+                    this.activate(gene);
+                }.bind(this), 400);
+            }
+        },
+
+        activate: function(gene) {
+            gene.next();
+            var location = this.transmitLocation();
+            gene.dominant(location);
+            this.activeGenes.push(gene);
+            setTimeout(function() {
+                this.clearIdentity(gene);
+            }.bind(this), 3000);
+        },
+
+        clearIdentity: function(gene) {
+            gene.recess();
+            this.activeGenes.splice(this.activeGenes.indexOf(gene), 1);
+            this.genes.push(gene);
+        }
+    });
+
+    var Gene = Class.extnd({
+        init: function() {
+            this.container = $("<div class='gene'/>");
+            this.codexPart = $("<span class='codex'/>");
+            this.nucleotidePart = $("<span class='nucleotide'/>");
+            this.offsetPart = $("<span class='offset'/>");
+
+            this.codexPart.appendTo(this.container);
+            this.nucleotidePart.appendTo(this.container);
+            this.container.append("<br/>");
+            this.offsetPart.appendTo(this.container);
+        },
+
+        attach: function(element) {
+            this.container.appendTo(element);
+        },
+
+        recess: function() {
+            this.container.css({
+                opacity: 0
+            })
+        },
+
+        dominant: function(location) {
+            var x = location.x;
+            var y = location.y;
+            this.container.css({
+                transform: "translate3d(" + x + "px, " + y + "px, 0px)",
+                opacity: .9
+            });
+            this.location = { x: x, y: y};
+        },
+
+        isWithin: function(target) {
+            return target.x + this.dimension.width < this.location.x &&
+                    target.x > this.location.x + this.dimension.width &&
+                    target.y + this.dimension.height < this.location.y &&
+                    target.y > this.location.y + this.dimension.height;
+        },
+
+        next: function() {
+            if (fear || Math.random() > .8) {
+                this.container.addClass("genetic-error");
+                this.codexPart.text("ERR0R/" + Math.round(Math.random() * 10));
+                this.nucleotidePart.text(".V/RUS+" + Math.round(Math.random() * 30));
+            } else {
+                this.container.removeClass("genetic-error");
+                this.codexPart.text(codex.sample());
+                this.nucleotidePart.text(nucleotides.sample());
+            }
+            this.evalMutation();
+            this.dimension = {
+                width: this.container.width(),
+                height: this.container.height()
+            };
+        },
+
+        evalMutation: function() {
+            this.offsetPart.text(offsets.sample(4).join(".") + ":" + Math.random().toString(36).split("").sample());
+        }
+    });
 
     function mutate() {
         setTimeout(function() {
@@ -40,69 +205,21 @@
         }
     }
 
-    function identifyComponent(gene, x, y) {
-        gene.style[css.transform] = "translate3d(" + x + "px, " + y + "px, 0)";
-        gene.style.opacity = .9;
-        if (!fear || Math.random() > .1) {
-            var geneticInfo;
-            if (Math.random() > .5) {
-                geneticInfo = "MXCH" + Math.round(Math.random() * 10) + "NE"
-            } else {
-                geneticInfo = "SOMATIC." + Math.round(Math.random() * 10);
-            }
-            gene.className = "gene";
-            gene.innerText = geneticInfo + ".GENE+" + Math.round(Math.random() * 300);
-        } else {
-            gene.className = "gene genetic-error";
-            gene.innerText = "ERR0R/" + Math.round(Math.random() * 10) + ".V/RUS+" + Math.round(Math.random() * 30);
-        }
-    }
-
     function mutateComponent(img) {
-        var origin = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-
-        var entityLocation = {
-            y: function() {
-                var range = 250;
-                var amount = range / 2 - Math.round(Math.random() * range);
-                return origin.y + amount - 80;
-            },
-            x: function() {
-                var range = 250;
-                var amount = range / 2 - Math.round(Math.random() * range);
-                return origin.x + amount;
-            }
-        };
-
+        var entityLocation = body.nextEntityLocation();
         setTimeout(function() {
             var scale = (Math.round(Math.random() * 70) + 10) / 100;
-            var rotate = Math.round(Math.random() * 180);
+            var rotate = Math.round(Math.random() * 360);
             var opacity = Math.random() * .4;
-            var x = entityLocation.x();
-            var y = entityLocation.y();
+            var x = entityLocation.x;
+            var y = entityLocation.y;
             img.style[css.transformOrigin] = x + "px " + y + "px";
             img.style[css.transform] = "rotate(" + rotate + "deg) scale(" + scale + ") translate3d(" + x + "px, " + y + "px, 0)";
             img.style.opacity = opacity;
             img.style.zIndex = Math.round(Math.random() * 100);
 
-            if (Math.random() < .02 && genes.length > 0) {
-                var gene = genes.pop();
-                setTimeout(function() {
-                    activeGenes.push(gene);
-                    identifyComponent(gene, x, y);
-                    setTimeout(function() {
-                        clearIdentity(gene);
-                    }, 3000);
-                }, 400);
-            }
-
+            dna.identifyMutation();
         }, Math.round(Math.random() * 500));
-    }
-
-    function clearIdentity(gene) {
-        gene.style.opacity = 0;
-        activeGenes.splice(activeGenes.indexOf(gene), 1);
-        genes.push(gene);
     }
 
     function updateProgress() {
@@ -153,12 +270,8 @@
             stage.appendChild(img);
         }
 
-        for (i = 0; i < identities; i++) {
-            var gene = document.createElement("div");
-            gene.className = "gene";
-            data.appendChild(gene);
-            genes.push(gene);
-        }
+        body = new Body();
+        dna = new DNA(body);
     }
 
     initialize();
