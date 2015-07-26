@@ -25,12 +25,12 @@
     }
 
     function open(panel) {
-        panel.velocity({ top: 0 }, { duration: 100 });
+        panel.velocity({ top: 0 }, { duration: 230 });
         panel.data("open", true);
     }
 
     function close(panel) {
-        panel.velocity({ top: "100%" }, { duration: 100 });
+        panel.velocity({ top: "100%" }, { duration: 230 });
         panel.data("open", false);
     }
 
@@ -49,18 +49,5 @@
     closePanelButton.click(function() {
         if (currentPanel != null) close(currentPanel);
     });
-
-    function recept() {
-        $.each($('.reception'), function(i, elem) {
-            if (Math.random() > 0.8) {
-                $(elem).hide();
-            } else {
-                $(elem).show();
-            }
-        });
-        setTimeout(function() { recept() }, Math.random() * 50);
-    }
-
-    recept();
 
 })(window.CSSUtils);
