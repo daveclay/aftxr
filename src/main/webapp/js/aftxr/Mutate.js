@@ -14,6 +14,21 @@
         return result;
     };
 
+    var clone = function(obj) {
+        return $.extend({}, obj);
+    };
+
+    var forcefeed = function(from, to) {
+        if (from) {
+            for (var key in to) {
+                var previousValue = from[key];
+                if (previousValue) {
+                    to[key] = [to[key], previousValue];
+                }
+            }
+        }
+    };
+
     var p = function(num, digits) {
         if (!digits) {
             digits = 4;
@@ -119,9 +134,9 @@
 
     var Channel = Class.extnd({
         init: function() {
-            this.element = $("<div class='view reception'/>");
-            this.degauss();
+            this.element = $("<div class='channel reception'/>");
             this.available = false;
+            this.degauss();
         },
 
         corrupt: function() {
@@ -130,11 +145,9 @@
             this.element.css({
                 backgroundColor: "rgba(" + rf(256) + ", " + rf(256) + ", " + rf(256) + ", .075)",
                 transform: "translate3d(" + x + "px, " + y + "px, 0px)",
-                /* width: rf(window.innerWidth) + 500, */
                 width: window.innerWidth,
                 height: rf(window.innerHeight / 2)
             });
-            this.element.velocity({ display: 'block' });
         },
 
         trigger: function() {
@@ -146,9 +159,10 @@
 
         degauss: function() {
             this.available = false;
+            this.off();
             setTimeout(function() {
                 this.trigger();
-            }.bind(this), (r(9312)) + 5301);
+            }.bind(this), (r(10312)) + 8301);
         },
 
         on: function() {
@@ -296,9 +310,116 @@
         }
     });
 
+    var Interactor = Class.extnd({
+        connect: function() {
+            var contact = function(event) {
+                interator.gid(f({x: event.pageX, y: event.pageY}).toArray().sample());
+            };
+            $(document).click(function(event) {
+            });
+        },
+
+        gid: function(selected) {
+            if (this.selectedBit) {
+                this.selectedBit = null;
+                imgs.forEach(function(img) {
+                    var $img = $(img);
+                    var previousData = $img.data("velocityData");
+                    $img.velocity({
+                        opacity: previousData.opacity,
+                        translateX: previousData.translateX
+                    }, {
+                        duration: 200
+                    }).velocity({
+                        rotateZ: previousData.rotateZ
+                    }, {
+                        duration: 60
+                    })
+                });
+            } else {
+                imgs.filter(function(img) {
+                    if (selected == img) {
+                        return;
+                    }
+                    var $img = $(img);
+                    $img.velocity({
+                        opacity:.1
+                    }, {
+                        duration: 200
+                    })
+                });
+
+                $(selected).velocity({
+                    rotateZ: 0
+                }, {
+                    duration: 1
+                }).velocity({
+                    opacity: 1,
+                    zIndex: 200,
+                    translateX: "200px"
+                }, {
+                    duration: 200
+                });
+                this.selectedBit = selected;
+            }
+        },
+
+        exp2: function(inv) {
+            var inc = (360 / imgs.length) * .0174532925;
+            for (var i = 0; i < imgs.length; i++) {
+                var $img = $(imgs[i]);
+                var previousData = $img.data("velocityData");
+                var x, y;
+                if (inv) {
+                    x = previousData.translateX;
+                    y = previousData.translateY;
+                } else {
+                    var xDist = window.innerWidth * Math.cos(inc * i);
+                    var yDist = window.innerHeight * Math.sin(inc * i);
+                    x = (window.innerWidth / 2) + xDist;
+                    y = (window.innerHeight / 2) + yDist;
+                }
+                $img.velocity({
+                    translateX: x,
+                    translateY: y
+                }, {
+                    duration: 300
+                })
+            }
+        },
+
+        exp: function(inv) {
+            for (var i = 0; i < imgs.length; i++) {
+                var $img = $(imgs[i]);
+                var previousData = $img.data("velocityData");
+                if (inv) {
+                    $img.velocity(previousData, {
+                        duration: 200,
+                        easing: "easeInOut"
+                    });
+                } else {
+                    var scale = r(1);
+                    var whacko = {
+                        rotateZ: r(180) + "deg",
+                        scaleX: scale,
+                        scaleY: scale,
+                        translateX: r(100) + "px",
+                        translateY: r(100) + "px",
+                        opacity: r(1)
+                    };
+                    forcefeed(previousData, whacko);
+                    $img.velocity(whacko, {
+                        duration: 1000,
+                        easing: "easeInOut"
+                    });
+                }
+            }
+        }
+    });
     var imgBits = 125;
     var bits = 135;
     var counter = 0;
+    var imgs = [];
     var logo = document.getElementById("logo");
     var stage = document.getElementById("stage");
     var conform = document.getElementById("conform");
@@ -307,6 +428,9 @@
     var interact = document.getElementById("interact");
     var progress = document.getElementById("progress");
     var meter = document.getElementById("meter");
+    var statusTX = document.getElementById("status-tx");
+    var statusClock = document.getElementById("status-clock");
+
     var fear = false;
     var codex = ["MXCHINE", "MXCH!NE", "SOMAT!C"];
     var nucleotides = [ "cytos!ne", "guan:ne", "aden!ne", "thxmine"];
@@ -315,6 +439,7 @@
     var dna;
     var body;
     var television;
+    var interator = new Interactor();
 
     function mutate() {
         setTimeout(function() {
@@ -331,7 +456,6 @@
     }
 
     function moveAll() {
-        var imgs = $('.bit');
         for (var i = 0; i < imgs.length; i++) {
             var img = imgs[i];
             mutateComponent(img);
@@ -340,6 +464,7 @@
 
     function mutateComponent(img) {
         var entityLocation = body.nextEntityLocation(200);
+        var $img = $(img);
         setTimeout(function() {
             var scale = (rf(70) + 10) / 100;
             var rotate = rf(180);
@@ -347,11 +472,9 @@
             var x = entityLocation.x;
             var y = entityLocation.y;
 
-            var easing = [0.98, 0.1, 0.28, 1.01];
+            var previousData = $img.data("velocityData");
 
-            $(img).velocity({
-                zIndex: rf(100)
-            }).velocity({
+            var velocityData = {
                 transformOriginX: x + "px",
                 transformOriginY: y + "px",
                 rotateZ: rotate + "deg",
@@ -360,21 +483,21 @@
                 translateX: x + "px",
                 translateY: y + "px",
                 opacity: opacity
-            }, {
+            };
+
+            $img.data("velocityData", clone(velocityData));
+
+            forcefeed(previousData, velocityData);
+
+            $img.velocity({
+                zIndex: rf(100)
+            }).velocity(velocityData, {
                 duration: 3000,
-                easing: easing,
-                progress: function(elements, complete, remaining, start, tweenValue) {
-                    if (remaining > 0) {
-                        $("#status-txr").html("TX(" + p(remaining) + "%)");
-                    } else {
-                        $("#status-txr").html("RX(0wait)");
-                    }
-                    $("#status-tx").text(start.toString(36));
-                }.bind(this)
+                easing: [0.98, 0.1, 0.28, 1.01]
             });
 
             dna.identifyMutation();
-        }, Math.round(Math.random() * 500));
+        }, rf(500));
     }
 
     function updateProgress() {
@@ -386,6 +509,8 @@
             meter.style.display = "none";
             progress.style.display = "none";
             info.style.display = "none";
+
+            $(stage).addClass("orbit");
         }
     }
 
@@ -417,10 +542,11 @@
         img.onload = function() {
             updateProgress();
         };
-        var x = window.innerWidth / 3;
-        var y = window.innerHeight / 3;
+        var x = window.innerWidth / 2;
+        var y = window.innerHeight / 2;
         img.style[css.transform] = "translate3d(" + x + "px, " + y + "px, 0)";
         stage.appendChild(img);
+        imgs.push(img);
     }
 
     function initialize() {
@@ -440,13 +566,7 @@
         }
 
         television.transmit();
-        $(document).click(function(event) {
-            var matches = f({x: event.pageX, y: event.pageY});
-            console.log(matches);
-            $(matches[0]).css({
-                transform: "translate3d(0px, 300px, 0)"
-            });
-        });
+        interator.connect();
     }
 
     initialize();
