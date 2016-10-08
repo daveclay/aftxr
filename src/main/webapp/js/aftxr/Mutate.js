@@ -76,19 +76,17 @@
         init: function() {
             this.channels = [];
             this.interrupted = false;
-        },
-
-        reception: function(channel) {
-            this.channels.push(channel);
-        },
-
-        interrupt: function() {
-            this.interrupted = true;
+            for (var i = 0; i < 4; i++) {
+                var channel = new Channel();
+                channel.element.appendTo(transmission);
+                this.channels.push(channel);
+            }
         },
 
         transmit: function() {
             if (!this.interrupted) {
                 this.channels.forEach(function(channel) {
+                    channel.off();
                     if (Math.random() > 0.5) {
                         channel.on();
                     } else {
@@ -99,7 +97,7 @@
             setTimeout(function() {
                 this.transmit();
             }.bind(this), Math.random() * 20);
-        }
+        },
     });
 
     var Body = Class.extnd({
@@ -183,19 +181,19 @@
         init: function(body) {
             var identities = 3;
             this.body = body;
-            this.genes = [];
-            this.activeGenes = [];
+            this.geneticMarkers = [];
+            this.activeGeneticMarkers = [];
             for (var i = 0; i < identities; i++) {
-                var gene = new Gene();
-                gene.attach(data);
-                this.genes.push(gene);
+                var geneId = new GeneticMarker();
+                geneId.attach(data);
+                this.geneticMarkers.push(geneId);
             }
         },
 
         withinAllActiveGenes: function(target) {
             var within = false;
-            for (var i = 0; i < this.activeGenes.length; i++) {
-                if (this.activeGenes[i].isWithin(target)) {
+            for (var i = 0; i < this.activeGeneticMarkers.length; i++) {
+                if (this.activeGeneticMarkers[i].isWithin(target)) {
                     within = true;
                     break;
                 }
@@ -203,12 +201,12 @@
             return within;
         },
 
-        potentialLocation: function(gene) {
+        potentialLocation: function(geneMarker) {
             var bounded = true;
             var target;
             while (bounded) {
-                target = this.body.nextEntityLocation(300, { x: window.innerWidth - gene.width});
-                target.dimension = gene.dimension;
+                target = this.body.nextEntityLocation(300, { x: window.innerWidth - geneMarker.width});
+                target.dimension = geneMarker.dimension;
                 if ( ! this.withinAllActiveGenes(target)) {
                     bounded = false;
                 }
@@ -217,32 +215,32 @@
         },
 
         identifyMutation: function() {
-            if (Math.random() < .03 && this.genes.length > 0) {
-                var gene = this.genes.pop();
+            if (Math.random() < .03 && this.geneticMarkers.length > 0) {
+                var gene = this.geneticMarkers.pop();
                 setTimeout(function() {
                     this.activate(gene);
                 }.bind(this), 400);
             }
         },
 
-        activate: function(gene) {
-            gene.next();
-            var location = this.potentialLocation(gene);
-            gene.dominant(location);
-            this.activeGenes.push(gene);
+        activate: function(geneMarker) {
+            geneMarker.next();
+            var location = this.potentialLocation(geneMarker);
+            geneMarker.dominant(location);
+            this.activeGeneticMarkers.push(geneMarker);
             setTimeout(function() {
-                this.clearIdentity(gene);
+                this.clearIdentity(geneMarker);
             }.bind(this), 3000);
         },
 
-        clearIdentity: function(gene) {
-            gene.recess();
-            this.activeGenes.splice(this.activeGenes.indexOf(gene), 1);
-            this.genes.push(gene);
+        clearIdentity: function(geneMarker) {
+            geneMarker.recess();
+            this.activeGeneticMarkers.splice(this.activeGeneticMarkers.indexOf(geneMarker), 1);
+            this.geneticMarkers.push(geneMarker);
         }
     });
 
-    var Gene = Class.extnd({
+    var GeneticMarker = Class.extnd({
         init: function() {
             this.container = $("<div class='gene'/>");
             this.marker = $("<span class='genetic-marker'/>");
@@ -422,6 +420,7 @@
     var imgs = [];
     var logo = document.getElementById("logo");
     var stage = document.getElementById("stage");
+    var transmission = document.getElementById("transmission");
     var conform = document.getElementById("conform");
     var data = document.getElementById("data");
     var info = document.getElementById("info");
@@ -441,7 +440,75 @@
     var television;
     var interator = new Interactor();
 
-    function mutate() {
+    function animate(time) {
+        window.requestAnimationFrame(animate);
+        render(time);
+    }
+
+    function render(time) {
+    }
+
+    var Mutator = Class.extnd({
+        init: function() {
+            var i;
+            for (i = 1; i <= bits; i++) {
+                initializeConstructBit(i);
+            }
+
+            body = new Body();
+            dna = new DNA(body);
+            television = new Television();
+            television.transmit();
+            interator.connect();
+        },
+
+        moveAll: function() {
+            for (var i = 0; i < imgs.length; i++) {
+                var img = imgs[i];
+                mutateComponent(img);
+            }
+        },
+
+        mutateComponent: function(img) {
+            var entityLocation = body.nextEntityLocation(200);
+            var $img = $(img);
+            setTimeout(function() {
+                var scale = (rf(70) + 10) / 100;
+                var rotate = rf(180);
+                var opacity = r(.7);
+                var x = entityLocation.x;
+                var y = entityLocation.y;
+
+                var previousData = $img.data("velocityData");
+
+                var velocityData = {
+                    transformOriginX: x + "px",
+                    transformOriginY: y + "px",
+                    rotateZ: rotate + "deg",
+                    scaleX: scale,
+                    scaleY: scale,
+                    translateX: x + "px",
+                    translateY: y + "px",
+                    opacity: opacity
+                };
+
+                $img.data("velocityData", clone(velocityData));
+
+                forcefeed(previousData, velocityData);
+
+                $img.velocity({
+                    zIndex: rf(100)
+                }).velocity(velocityData, {
+                    duration: 3000,
+                    easing: [0.98, 0.1, 0.28, 1.01]
+                });
+
+                dna.identifyMutation();
+            }, rf(500));
+        }
+    });
+
+    function mutate(time) {
         setTimeout(function() {
             moveAll();
 
@@ -453,51 +520,6 @@
 
             mutate();
         }, Math.round(Math.random() * 4000) + 8000);
-    }
-
-    function moveAll() {
-        for (var i = 0; i < imgs.length; i++) {
-            var img = imgs[i];
-            mutateComponent(img);
-        }
-    }
-
-    function mutateComponent(img) {
-        var entityLocation = body.nextEntityLocation(200);
-        var $img = $(img);
-        setTimeout(function() {
-            var scale = (rf(70) + 10) / 100;
-            var rotate = rf(180);
-            var opacity = r(.7);
-            var x = entityLocation.x;
-            var y = entityLocation.y;
-
-            var previousData = $img.data("velocityData");
-
-            var velocityData = {
-                transformOriginX: x + "px",
-                transformOriginY: y + "px",
-                rotateZ: rotate + "deg",
-                scaleX: scale,
-                scaleY: scale,
-                translateX: x + "px",
-                translateY: y + "px",
-                opacity: opacity
-            };
-
-            $img.data("velocityData", clone(velocityData));
-
-            forcefeed(previousData, velocityData);
-
-            $img.velocity({
-                zIndex: rf(100)
-            }).velocity(velocityData, {
-                duration: 3000,
-                easing: [0.98, 0.1, 0.28, 1.01]
-            });
-
-            dna.identifyMutation();
-        }, rf(500));
     }
 
     function updateProgress() {
@@ -542,31 +564,8 @@
         img.onload = function() {
             updateProgress();
         };
-        var x = window.innerWidth / 2;
-        var y = window.innerHeight / 2;
-        img.style[css.transform] = "translate3d(" + x + "px, " + y + "px, 0)";
         stage.appendChild(img);
         imgs.push(img);
-    }
-
-    function initialize() {
-        var i;
-        for (i = 1; i <= bits; i++) {
-            initializeConstructBit(i);
-        }
-
-        body = new Body();
-        dna = new DNA(body);
-        television = new Television();
-
-        for (i = 0; i < 4; i++) {
-            var channel = new Channel();
-            channel.element.appendTo(document.getElementById("transmission"));
-            television.reception(channel);
-        }
-
-        television.transmit();
-        interator.connect();
     }
 
     initialize();

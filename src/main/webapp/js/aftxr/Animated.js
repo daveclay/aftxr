@@ -20,24 +20,7 @@ function Animated(delay) {
 }
 
 function AnimationScheduler() {
-    var self = this;
-
-    var requestAnimationFrame = window.requestAnimationFrame || // standard
-        window.mozRequestAnimationFrame || // firefox
-        window.webkitRequestAnimationFrame || // Chrome and Safari
-        window.msRequestAnimationFrame; // IE10
-
-    var cancelAnimationFrame =
-        window.cancelAnimationFrame ||
-        window.webkitCancelRequestAnimationFrame ||
-        window.mozCancelRequestAnimationFrame ||
-        window.oCancelRequestAnimationFrame ||
-        window.msCancelRequestAnimationFrame;
-
     this.start = function(fn, delay) {
-        if (!requestAnimationFrame) {
-            return window.setTimeout(fn, delay);
-        }
         var start = new Date().getTime();
         var handle = {};
 
@@ -50,10 +33,10 @@ function AnimationScheduler() {
                 start = new Date().getTime();
             }
             // This isn't right.
-            handle.value = requestAnimationFrame(loop);
+            handle.value = window.requestAnimationFrame(loop);
         }
 
-        handle.value = requestAnimationFrame(loop);
+        handle.value = window.requestAnimationFrame(loop);
         return handle;
     };
 
