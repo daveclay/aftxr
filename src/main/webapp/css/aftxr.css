@@ -179,6 +179,11 @@ and (min-width : 481px) {
     top: 0;
 }
 
+#info,
+#progress-container {
+    z-index: 100000;
+}
+
 #info {
     position: absolute;
     top: 52%;
@@ -186,22 +191,27 @@ and (min-width : 481px) {
     font-size: 31px;
 }
 
-#progress,
 #meter {
-    position: absolute;
-    left: 0;
     height: 10px;
     z-index: 1000;
 }
 
-#progress {
+#progress-container {
+    text-align: center;
+    position: absolute;
     top: 50%;
-    background-color: rgba(0, 0, 0, 0);
+    left: 0;
     width: 100%;
 }
 
+#progress {
+    width: 20%;
+    margin: auto;
+}
+
 #meter {
-    background-color: rgba(208, 60, 0, .2);
+    background-color: rgba(208, 60, 0, .6);
+    width: 0;
 }
 
 .bit {

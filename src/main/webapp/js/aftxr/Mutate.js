@@ -468,7 +468,7 @@
         setTimeout(function() {
             var scale = (rf(70) + 10) / 100;
             var rotate = rf(180);
-            var opacity = r(.7);
+            var opacity = r(.5);
             var x = entityLocation.x;
             var y = entityLocation.y;
 
