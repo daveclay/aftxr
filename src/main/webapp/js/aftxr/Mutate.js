@@ -443,7 +443,7 @@
     var television;
     var interator = new Interactor();
 
-    var paused = false;
+    var paused = true;
 
     document.aftxr.pause = function() {
         paused = true;
@@ -458,7 +458,9 @@
     function mutate() {
         setTimeout(function() {
             if (!paused) {
-                moveAll();
+                forAll(function(img) {
+                    mutateComponent(img)
+                });
 
                 if (Math.random() < .1) {
                     operand();
@@ -471,6 +473,13 @@
         }, Math.round(Math.random() * 4000) + 8000);
     }
 
+    function forAll(callback) {
+        for (var i = 0; i < imgs.length; i++) {
+            var img = imgs[i];
+            callback(img);
+        }
+    }
+
     function moveAll() {
         for (var i = 0; i < imgs.length; i++) {
             var img = imgs[i];
@@ -479,41 +488,45 @@
     }
 
     function mutateComponent(img) {
+        setTimeout(function() {
+            mutateComponentNow(img, 3000);
+        }, rf(500));
+    }
+
+    function mutateComponentNow(img, duration) {
         var entityLocation = body.nextEntityLocation(200);
         var $img = $(img);
-        setTimeout(function() {
-            var scale = (rf(70) + 10) / 100;
-            var rotate = rf(180);
-            var opacity = r(.45);
-            var x = entityLocation.x;
-            var y = entityLocation.y;
+        var scale = (rf(70) + 10) / 100;
+        var rotate = rf(180);
+        var opacity = r(.45);
+        var x = entityLocation.x;
+        var y = entityLocation.y;
 
-            var previousData = $img.data("velocityData");
+        var previousData = $img.data("velocityData");
 
-            var velocityData = {
-                transformOriginX: x + "px",
-                transformOriginY: y + "px",
-                rotateZ: rotate + "deg",
-                scaleX: scale,
-                scaleY: scale,
-                translateX: x + "px",
-                translateY: y + "px",
-                opacity: opacity
-            };
+        var velocityData = {
+            transformOriginX: x + "px",
+            transformOriginY: y + "px",
+            rotateZ: rotate + "deg",
+            scaleX: scale,
+            scaleY: scale,
+            translateX: x + "px",
+            translateY: y + "px",
+            opacity: opacity
+        };
 
-            $img.data("velocityData", clone(velocityData));
+        $img.data("velocityData", clone(velocityData));
 
-            forcefeed(previousData, velocityData);
+        forcefeed(previousData, velocityData);
 
-            $img.velocity({
-                zIndex: rf(100)
-            }).velocity(velocityData, {
-                duration: 3000,
-                easing: [0.98, 0.1, 0.28, 1.01]
-            });
+        $img.velocity({
+            zIndex: rf(100)
+        }).velocity(velocityData, {
+            duration: duration,
+            easing: [0.98, 0.1, 0.28, 1.01]
+        });
 
-            dna.identifyMutation();
-        }, rf(500));
+        dna.identifyMutation();
     }
 
     function updateProgress() {
@@ -527,6 +540,9 @@
             info.style.display = "none";
 
             $(stage).addClass("orbit");
+            document.aftxr.resume();
+            moveAll();
+            mutate();
         }
     }
 
@@ -557,6 +573,7 @@
         img.setAttribute("id", "bit" + i);
         img.onload = function() {
             updateProgress();
+            mutateComponentNow(img, 10);
         };
         var x = window.innerWidth / 2;
         var y = window.innerHeight / 2;
@@ -589,7 +606,5 @@
     }
 
     initialize();
-    moveAll();
-    mutate();
 
 })(window.CSSUtils);
