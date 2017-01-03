@@ -27,11 +27,13 @@
     function open(panel) {
         panel.velocity({ top: 0 }, { duration: 230 });
         panel.data("open", true);
+        document.aftxr.pause();
     }
 
     function close(panel) {
         panel.velocity({ top: "100%" }, { duration: 230 });
         panel.data("open", false);
+        document.aftxr.resume();
     }
 
     function toggle(panel) {

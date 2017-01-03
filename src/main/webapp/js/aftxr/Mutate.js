@@ -1,5 +1,7 @@
 (function(css) {
 
+    document.aftxr = {};
+
     // https://github.com/borisschapira/preloadr
     // https://github.com/DominicTobias/extnd
 
@@ -441,14 +443,28 @@
     var television;
     var interator = new Interactor();
 
+    var paused = false;
+
+    document.aftxr.pause = function() {
+        paused = true;
+        $(stage).removeClass("orbit");
+    };
+
+    document.aftxr.resume = function() {
+        paused = false;
+        $(stage).addClass("orbit");
+    };
+
     function mutate() {
         setTimeout(function() {
-            moveAll();
+            if (!paused) {
+                moveAll();
 
-            if (Math.random() < .1) {
-                operand();
-            } else if (fear) {
-                remission();
+                if (Math.random() < .1) {
+                    operand();
+                } else if (fear) {
+                    remission();
+                }
             }
 
             mutate();
@@ -468,7 +484,7 @@
         setTimeout(function() {
             var scale = (rf(70) + 10) / 100;
             var rotate = rf(180);
-            var opacity = r(.5);
+            var opacity = r(.45);
             var x = entityLocation.x;
             var y = entityLocation.y;
 
@@ -557,6 +573,8 @@
 
         body = new Body();
         dna = new DNA(body);
+
+        /*
         television = new Television();
 
         for (i = 0; i < 4; i++) {
@@ -566,6 +584,7 @@
         }
 
         television.transmit();
+        */
         interator.connect();
     }
 

@@ -143,12 +143,12 @@ and (min-width : 481px) {
 #logo {
     display: inline-block;
     text-transform: uppercase;
-    font-family: "Allerta Stencil";
+    font-family: "Allerta Stencil", sans-serif;
     font-size: 30vw;
     font-weight: bold;
-    padding-top: 0;
     margin-top: 8vw;
-    color: rgba(170, 200, 210, .075);
+    padding-top: 0;
+    color: rgba(162, 200, 210, .15);
     text-align: center;
     vertical-align: top;
     width: 100%;
@@ -240,8 +240,8 @@ and (min-width : 481px) {
 
 .gene {
     font-size: .5em;
-    color: rgba(130, 190, 198, .5);
-    background-color: rgba(0, 0, 0, .5);
+    color: rgba(130, 190, 198, .7);
+    background-color: rgba(0, 0, 0, .7);
 }
 
 .genetic-error {
