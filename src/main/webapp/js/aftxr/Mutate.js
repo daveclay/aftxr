@@ -1,5 +1,7 @@
 (function(css) {
 
+    var delay = 3000;
+
     document.aftxr = {};
 
     // https://github.com/borisschapira/preloadr
@@ -221,9 +223,7 @@
         identifyMutation: function() {
             if (Math.random() < .03 && this.genes.length > 0) {
                 var gene = this.genes.pop();
-                setTimeout(function() {
-                    this.activate(gene);
-                }.bind(this), 400);
+                this.activate(gene);
             }
         },
 
@@ -234,7 +234,7 @@
             this.activeGenes.push(gene);
             setTimeout(function() {
                 this.clearIdentity(gene);
-            }.bind(this), 3000);
+            }.bind(this), delay);
         },
 
         clearIdentity: function(gene) {
@@ -246,6 +246,7 @@
 
     var Gene = Class.extnd({
         init: function() {
+            this.active = false;
             this.container = $("<div class='gene'/>");
             this.marker = $("<span class='genetic-marker'/>");
             var geneticContent = $("<span class='genetic-content'/>");
@@ -268,6 +269,7 @@
         },
 
         recess: function() {
+            this.active = false;
             this.container.css({
                 opacity: 0
             });
@@ -281,6 +283,8 @@
                 opacity: 1
             });
             this.location = { x: x, y: y};
+            this.active = true;
+            this.flicker();
         },
 
         isWithin: function(target) {
@@ -309,7 +313,29 @@
 
         evalMutation: function() {
             this.offsetPart.text(offsets.sample(4).join(".") + ":" + Math.random().toString(36).split("").sample());
-        }
+        },
+
+        flicker: function() {
+          if (this.active) {
+            if (Math.random() > .02) {
+              this.on();
+            } else {
+              this.off();
+            }
+
+            setTimeout(function() {
+              this.flicker();
+            }.bind(this), 1)
+          }
+        },
+
+        on: function() {
+          this.container.css({ display: 'block' });
+        },
+
+        off: function() {
+          this.container.css({ display: 'none' });
+        },
     });
 
     var Interactor = Class.extnd({
@@ -461,14 +487,7 @@
                 forAll(function(img) {
                     mutateComponent(img)
                 });
-
-                if (Math.random() < .1) {
-                    operand();
-                } else if (fear) {
-                    remission();
-                }
             }
-
             mutate();
         }, Math.round(Math.random() * 4000) + 8000);
     }
@@ -480,17 +499,8 @@
         }
     }
 
-    function moveAll() {
-        for (var i = 0; i < imgs.length; i++) {
-            var img = imgs[i];
-            mutateComponent(img);
-        }
-    }
-
     function mutateComponent(img) {
-        setTimeout(function() {
-            mutateComponentNow(img, 3000);
-        }, rf(500));
+        mutateComponentNow(img, delay);
     }
 
     function mutateComponentNow(img, duration) {
@@ -523,10 +533,11 @@
             zIndex: rf(100)
         }).velocity(velocityData, {
             duration: duration,
-            easing: [0.98, 0.1, 0.28, 1.01]
+            easing: [0.98, 0.1, 0.28, 1.01],
+            complete: function() {
+                dna.identifyMutation();
+            }
         });
-
-        dna.identifyMutation();
     }
 
     function updateProgress() {
@@ -541,7 +552,6 @@
 
             $(stage).addClass("orbit");
             document.aftxr.resume();
-            moveAll();
             mutate();
         }
     }

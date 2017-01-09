@@ -1,6 +1,6 @@
 (function(css) {
     var stage = document.getElementById("stage");
-    var numberOfGenes = 1;
+    var numberOfGenes = 30;
     var genes = [];
 
     function create(i) {
@@ -10,7 +10,7 @@
 
         var container = document.createElement('div');
         container.className = 'gene-line';
-        gene.style.left = i + "px";
+        gene.style.left = (i * 10) + "px";
         gene.appendChild(container);
         stage.appendChild(gene);
 

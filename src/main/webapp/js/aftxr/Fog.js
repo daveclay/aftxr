@@ -26,6 +26,7 @@
         gene.style.height = size + "px";
         gene.style.left = Math.round(Math.random() * window.innerWidth) - (size / 2);
         gene.style.top = Math.round(Math.random() * window.innerHeight) - (size / 2);
+
         setTimeout(function() {
             modify(gene);
         }, (Math.random() * 4000) + 1000);
