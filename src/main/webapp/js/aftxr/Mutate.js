@@ -461,23 +461,42 @@
       this.imgs = [];
       this.counter = 0;
       this.fear = false;
-      this.paused = true;
     },
 
-    load: function() {
+    onUpdateProgress: function(onUpdateProgressCallback) {
+      this.onUpdateProgressCallback = onUpdateProgressCallback;
+    },
+
+    onLoad: function(onLoadCallback) {
+      this.onLoadCallback = onLoadCallback
+    },
+
+    updateProgress: function() {
+      this.counter++;
+      var percent = Math.round(this.counter / this.bits * 100);
+      this.onUpdateProgressCallback(percent);
+      if (percent >= 100) {
+        this.onLoadCallback();
+      }
+    },
+
+    download: function() {
       var i;
       for (i = 1; i <= this.bits; i++) {
         this.initializeConstructBit(i);
       }
     },
 
+    begin: function() {
+      $(stage).addClass("orbit");
+      this.mutate();
+    },
+
     mutate: function() {
       setTimeout(function() {
-        if (!this.paused) {
-          this.forAll(function(img) {
-            this.mutateComponent(img)
-          }.bind(this));
-        }
+        this.forAll(function(img) {
+          this.mutateComponent(img)
+        }.bind(this));
         this.mutate();
       }.bind(this), Math.round(Math.random() * 4000) + 8000);
     },
@@ -530,22 +549,6 @@
       });
     },
 
-    updateProgress: function() {
-      this.counter++;
-      var percent = Math.round(this.counter / this.bits * 100);
-      meter.style.width = percent + "%";
-      info.innerText = percent + "%";
-      if (percent >= 100) {
-        meter.style.display = "none";
-        progress.style.display = "none";
-        info.style.display = "none";
-
-        $(stage).addClass("orbit");
-        document.aftxr.resume();
-        this.mutate();
-      }
-    },
-
     remission: function() {
       this.fear = false;
       for (var i = 1; i <= this.bits; i++) {
@@ -584,39 +587,56 @@
 
   });
 
+  var ProgressBar = Class.extnd({
+    init: function() {
+      this.info = document.getElementById("info");
+      this.progress = document.getElementById("progress");
+      this.meter = document.getElementById("meter");
+    },
+
+    update: function(percent) {
+      this.meter.style.width = percent + "%";
+      this.info.innerText = percent + "%";
+    },
+
+    done: function() {
+      this.meter.style.display = "none";
+      this.progress.style.display = "none";
+      this.info.style.display = "none";
+    }
+  });
+
   var logo = document.getElementById("logo");
   var stage = document.getElementById("stage");
   var conform = document.getElementById("conform");
   var data = document.getElementById("data");
-  var info = document.getElementById("info");
   var interact = document.getElementById("interact");
-  var progress = document.getElementById("progress");
-  var meter = document.getElementById("meter");
   var statusTX = document.getElementById("status-tx");
   var statusClock = document.getElementById("status-clock");
 
   var growthMachine;
   var dna;
   var body;
+  var progressBar;
   var television;
   var interator = new Interactor();
 
-  document.aftxr.pause = function() {
-    growthMachine.paused = true;
-    $(stage).removeClass("orbit");
-  };
-
-  document.aftxr.resume = function() {
-    growthMachine.paused = false;
-    $(stage).addClass("orbit");
-  };
-
   function initialize() {
+    progressBar = new ProgressBar();
     growthMachine = new GrowthMachine();
     body = new Body();
     dna = new DNA(growthMachine, body);
 
-    growthMachine.load();
+    growthMachine.onUpdateProgress(function(percent) {
+      progressBar.update(percent);
+    });
+
+    growthMachine.onLoad(function() {
+      progressBar.done();
+      growthMachine.begin();
+    });
+
+    growthMachine.download();
 
     /*
     television = new Television();
