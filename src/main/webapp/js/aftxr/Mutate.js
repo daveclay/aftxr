@@ -299,6 +299,9 @@
 
     begin: function() {
       $(growthMachineElement).addClass("orbit");
+      this.forAll(function(img) {
+        this.mutateComponentNow(img, 2000, true);
+      }.bind(this));
       this.mutate();
     },
 
@@ -322,7 +325,7 @@
       this.mutateComponentNow(img, delay);
     },
 
-    mutateComponentNow: function(img, duration) {
+    mutateComponentNow: function(img, duration, initial) {
       var entityLocation = body.nextEntityLocation(200);
       var $img = $(img);
       var scale = (rf(70) + 10) / 100;
@@ -334,15 +337,16 @@
       var previousData = $img.data("velocityData");
 
       var velocityData = {
-        transformOriginX: x + "px",
-        transformOriginY: y + "px",
         rotateZ: rotate + "deg",
         scaleX: scale,
         scaleY: scale,
-        translateX: x + "px",
-        translateY: y + "px",
-        opacity: opacity
+        opacity: initial ? 0 : opacity
       };
+
+      velocityData.transformOriginX = x + "px";
+      velocityData.transformOriginY = y + "px";
+      velocityData.translateX = x + "px";
+      velocityData.translateY = y + "px";
 
       $img.data("velocityData", clone(velocityData));
 
@@ -351,12 +355,20 @@
       $img.velocity({
         zIndex: rf(100)
       }).velocity(velocityData, {
-        duration: duration,
+        duration: initial ? 10 : duration,
         easing: [0.98, 0.1, 0.28, 1.01],
         complete: function() {
           dna.identifyMutation();
         }.bind(this)
       });
+
+      if (initial) {
+        $img.velocity({
+          opacity: opacity
+        }, {
+          duration: duration
+        });
+      }
     },
 
     remission: function() {
@@ -386,7 +398,6 @@
       img.setAttribute("id", "bit" + i);
       img.onload = function() {
         this.updateProgress();
-        this.mutateComponentNow(img, 10);
       }.bind(this);
       var x = window.innerWidth / 2;
       var y = window.innerHeight / 2;

@@ -166,7 +166,7 @@ and (min-width : 481px) {
     position: absolute;
 }
 
-#stage,
+#growthMachine,
 #data {
     position: absolute;
     top: 0;
