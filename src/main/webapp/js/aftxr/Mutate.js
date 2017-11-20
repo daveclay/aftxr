@@ -298,7 +298,7 @@
     },
 
     begin: function() {
-      $(stage).addClass("orbit");
+      $(growthMachineElement).addClass("orbit");
       this.mutate();
     },
 
@@ -391,7 +391,7 @@
       var x = window.innerWidth / 2;
       var y = window.innerHeight / 2;
       img.style[css.transform] = "translate3d(" + x + "px, " + y + "px, 0)";
-      stage.appendChild(img);
+      growthMachineElement.appendChild(img);
       this.imgs.push(img);
     }
 
@@ -417,7 +417,7 @@
   });
 
   var logo = document.getElementById("logo");
-  var stage = document.getElementById("stage");
+  var growthMachineElement = document.getElementById("growthMachine");
   var data = document.getElementById("data");
 
   var growthMachine;
@@ -437,7 +437,7 @@
 
     growthMachine.onLoad(function() {
       progressBar.done();
-      // growthMachine.begin();
+      growthMachine.begin();
     });
 
     growthMachine.download();
