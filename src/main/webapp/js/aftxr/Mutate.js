@@ -1,9 +1,5 @@
 (function(css) {
-
   var delay = 3000;
-
-  document.aftxr = {};
-
   // https://github.com/borisschapira/preloadr
   // https://github.com/DominicTobias/extnd
 
@@ -76,36 +72,6 @@
     return Math.round(r(scale));
   };
 
-  var Television = Class.extnd({
-    init: function() {
-      this.channels = [];
-      this.interrupted = false;
-    },
-
-    reception: function(channel) {
-      this.channels.push(channel);
-    },
-
-    interrupt: function() {
-      this.interrupted = true;
-    },
-
-    transmit: function() {
-      if (!this.interrupted) {
-        this.channels.forEach(function(channel) {
-          if (Math.random() > 0.5) {
-            channel.on();
-          } else {
-            channel.off();
-          }
-        }.bind(this));
-      }
-      setTimeout(function() {
-        this.transmit();
-      }.bind(this), Math.random() * 20);
-    }
-  });
-
   var Body = Class.extnd({
     init: function() {
       this.origin = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
@@ -133,54 +99,6 @@
         }
       }
       return { x: x, y: y };
-    }
-  });
-
-  var Channel = Class.extnd({
-    init: function(growthMachine) {
-      this.growthMachine = growthMachine;
-      this.element = $("<div class='channel reception'/>");
-      this.available = false;
-      this.degauss();
-    },
-
-    corrupt: function() {
-      var x = 0;
-      var y = rf(window.innerHeight);
-      this.element.css({
-        backgroundColor: "rgba(" + rf(256) + ", " + rf(256) + ", " + rf(256) + ", .075)",
-        transform: "translate3d(" + x + "px, " + y + "px, 0px)",
-        width: window.innerWidth,
-        height: rf(window.innerHeight / 2)
-      });
-    },
-
-    trigger: function() {
-      this.available = true;
-      setTimeout(function() {
-        this.degauss();
-      }.bind(this), r(2331));
-    },
-
-    degauss: function() {
-      this.available = false;
-      this.off();
-      setTimeout(function() {
-        this.trigger();
-      }.bind(this), (r(10312)) + 8301);
-    },
-
-    on: function() {
-      if (this.available) {
-        this.element.velocity({ display: 'block' });
-        if (!this.growthMachine.fear && Math.random() > .3) {
-          this.corrupt();
-        }
-      }
-    },
-
-    off: function() {
-      this.element.velocity({ display: 'none' });
     }
   });
 
@@ -345,114 +263,6 @@
     },
   });
 
-  var Interactor = Class.extnd({
-
-    connect: function() {
-      var contact = function(event) {
-        interator.gid(f({x: event.pageX, y: event.pageY}).toArray().sample());
-      };
-      $(document).click(function(event) {
-      });
-    },
-
-    gid: function(selected) {
-      if (this.selectedBit) {
-        this.selectedBit = null;
-        imgs.forEach(function(img) {
-          var $img = $(img);
-          var previousData = $img.data("velocityData");
-          $img.velocity({
-            opacity: previousData.opacity,
-            translateX: previousData.translateX
-          }, {
-            duration: 200
-          }).velocity({
-            rotateZ: previousData.rotateZ
-          }, {
-            duration: 60
-          })
-        });
-      } else {
-        imgs.filter(function(img) {
-          if (selected == img) {
-            return;
-          }
-          var $img = $(img);
-          $img.velocity({
-            opacity:.1
-          }, {
-            duration: 200
-          })
-        });
-
-        $(selected).velocity({
-          rotateZ: 0
-        }, {
-          duration: 1
-        }).velocity({
-          opacity: 1,
-          zIndex: 200,
-          translateX: "200px"
-        }, {
-          duration: 200
-        });
-        this.selectedBit = selected;
-      }
-    },
-
-    exp2: function(inv) {
-      var inc = (360 / imgs.length) * .0174532925;
-      for (var i = 0; i < imgs.length; i++) {
-        var $img = $(imgs[i]);
-        var previousData = $img.data("velocityData");
-        var x, y;
-        if (inv) {
-          x = previousData.translateX;
-          y = previousData.translateY;
-        } else {
-          var xDist = window.innerWidth * Math.cos(inc * i);
-          var yDist = window.innerHeight * Math.sin(inc * i);
-          x = (window.innerWidth / 2) + xDist;
-          y = (window.innerHeight / 2) + yDist;
-        }
-        $img.velocity({
-          translateX: x,
-          translateY: y
-        }, {
-          duration: 300
-        })
-      }
-    },
-
-    exp: function(inv) {
-      for (var i = 0; i < imgs.length; i++) {
-        var $img = $(imgs[i]);
-        var previousData = $img.data("velocityData");
-        if (inv) {
-          $img.velocity(previousData, {
-            duration: 200,
-            easing: "easeInOut"
-          });
-        } else {
-          var scale = r(1);
-          var whacko = {
-            rotateZ: r(180) + "deg",
-            scaleX: scale,
-            scaleY: scale,
-            translateX: r(100) + "px",
-            translateY: r(100) + "px",
-            opacity: r(1)
-          };
-          forcefeed(previousData, whacko);
-          $img.velocity(whacko, {
-            duration: 1000,
-            easing: "easeInOut"
-          });
-        }
-      }
-    }
-  });
-
   var GrowthMachine = Class.extnd({
 
     init: function() {
@@ -608,18 +418,12 @@
 
   var logo = document.getElementById("logo");
   var stage = document.getElementById("stage");
-  var conform = document.getElementById("conform");
   var data = document.getElementById("data");
-  var interact = document.getElementById("interact");
-  var statusTX = document.getElementById("status-tx");
-  var statusClock = document.getElementById("status-clock");
 
   var growthMachine;
   var dna;
   var body;
   var progressBar;
-  var television;
-  var interator = new Interactor();
 
   function initialize() {
     progressBar = new ProgressBar();
@@ -633,23 +437,10 @@
 
     growthMachine.onLoad(function() {
       progressBar.done();
-      growthMachine.begin();
+      // growthMachine.begin();
     });
 
     growthMachine.download();
-
-    /*
-    television = new Television();
-
-    for (i = 0; i < 4; i++) {
-        var channel = new Channel();
-        channel.element.appendTo(document.getElementById("transmission"));
-        television.reception(channel);
-    }
-
-    television.transmit();
-    */
-    interator.connect();
   }
 
   initialize();
