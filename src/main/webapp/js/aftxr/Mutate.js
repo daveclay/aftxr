@@ -416,16 +416,46 @@
     }
   });
 
-  var logo = document.getElementById("logo");
+  var Logo = Class.extnd({
+    init: function() {
+      this.logo = document.getElementById("logo");
+      this.$logo = $(this.logo);
+    },
+
+    fadeIn: function(callback) {
+      this.$logo.velocity({
+        opacity: 1
+      }, {
+        duration: 2000,
+        complete: function() {
+          callback();
+        }
+      });
+    },
+
+    fadeOut: function(callback) {
+      this.$logo.velocity({
+        opacity: 0
+      }, {
+        duration: 2000,
+        complete: function() {
+          callback();
+        }
+      });
+    }
+  });
+
   var growthMachineElement = document.getElementById("growthMachine");
   var data = document.getElementById("data");
 
+  var logo;
   var growthMachine;
   var dna;
   var body;
   var progressBar;
 
   function initialize() {
+    logo = new Logo();
     progressBar = new ProgressBar();
     growthMachine = new GrowthMachine();
     body = new Body();
@@ -437,10 +467,15 @@
 
     growthMachine.onLoad(function() {
       progressBar.done();
-      growthMachine.begin();
+      logo.fadeOut(function() {
+        growthMachine.begin();
+      });
     });
 
     growthMachine.download();
+
+    logo.fadeIn(function() {
+    });
   }
 
   initialize();

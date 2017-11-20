@@ -150,6 +150,7 @@ and (min-width : 481px) {
 }
 
 #logo {
+    opacity: 0;
     display: inline-block;
     text-transform: uppercase;
     font-family: "Allerta Stencil", sans-serif;
