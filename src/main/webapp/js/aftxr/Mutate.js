@@ -484,8 +484,6 @@
   var data = document.getElementById("data");
   var statusClock = document.getElementById("status-clock");
 
-  var radians = 0;
-
   var logo;
   var growthMachine;
   var dna;

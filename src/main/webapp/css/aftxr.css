@@ -158,7 +158,7 @@ and (min-width : 481px) {
     font-weight: bold;
     margin-top: 8vw;
     padding-top: 0;
-    color: rgba(162, 200, 210, .15);
+    color: rgba(162, 190, 210, .45);
     text-align: center;
     vertical-align: top;
     width: 100%;
@@ -197,7 +197,7 @@ and (min-width : 481px) {
 #info {
     position: absolute;
     top: 52%;
-    left: 45%;
+    left: 49%;
     font-size: 18px;
 }
 
@@ -217,10 +217,12 @@ and (min-width : 481px) {
 #progress {
     width: 20%;
     margin: auto;
+    border: 1px solid #333333;
+    background-color: rgba(0, 0, 0, .5);
 }
 
 #meter {
-    background-color: rgba(208, 60, 0, .6);
+    background-color: rgba(208, 60, 0, 1);
     width: 0;
 }
 
