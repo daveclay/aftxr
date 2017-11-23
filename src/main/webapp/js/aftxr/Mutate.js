@@ -3,6 +3,24 @@
   // https://github.com/borisschapira/preloadr
   // https://github.com/DominicTobias/extnd
 
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/padStart
+  if (!String.prototype.padStart) {
+    String.prototype.padStart = function padStart(targetLength,padString) {
+      targetLength = targetLength>>0; //floor if number or convert non-number to 0;
+      padString = String(padString || ' ');
+      if (this.length > targetLength) {
+        return String(this);
+      }
+      else {
+        targetLength = targetLength-this.length;
+        if (targetLength > padString.length) {
+          padString += padString.repeat(targetLength/padString.length); //append to original to ensure we are longer than needed
+        }
+        return padString.slice(0,targetLength) + String(this);
+      }
+    };
+  }
+
   Array.prototype.sample = function(items) {
     if ( ! items) {
       items = 1;
@@ -352,6 +370,9 @@
 
       forcefeed(previousData, velocityData);
 
+      var id = $img.attr("id");
+      var progressBit = id === "bit1";
+
       $img.velocity({
         zIndex: rf(100)
       }).velocity(velocityData, {
@@ -359,7 +380,10 @@
         easing: [0.98, 0.1, 0.28, 1.01],
         complete: function() {
           dna.identifyMutation();
-        }.bind(this)
+        }.bind(this),
+        progress: progressBit ? function(elements, complete, remaining, start, tweenValue) {
+          statusClock.innerText = ("" + Math.floor(remaining * 10)).padStart(5, "0");
+        }.bind(this) : function() {}
       });
 
       if (initial) {
@@ -458,6 +482,9 @@
 
   var growthMachineElement = document.getElementById("growthMachine");
   var data = document.getElementById("data");
+  var statusClock = document.getElementById("status-clock");
+
+  var radians = 0;
 
   var logo;
   var growthMachine;

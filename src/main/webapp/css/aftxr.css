@@ -182,11 +182,11 @@ and (min-width : 481px) {
 
 #status {
     font-family: "Ubuntu Mono";
-    font-size: 8px;
+    font-size: 10px;
     color: rgba(130, 190, 198, .5);
     position: absolute;
-    left: 0;
-    top: 0;
+    left: 2px;
+    top: 1px;
 }
 
 #info,
@@ -270,7 +270,7 @@ and (min-width : 481px) {
     width: 20px;
     height: 20px;
     border: 1px solid rgba(0, 0, 0, .8);
-    background-color: rgba(190, 203, 198, .3);
+    background-color: rgba(0, 30, 50, .3);
 }
 
 .genetic-content {
