@@ -8,14 +8,15 @@ body {
   z-index: 200;
   position: absolute;
   width: 100%;
+  text-align: center;
 }
 
 .playerContainer iframe {
-  padding-left: 1%;
+  margin-left: 1%;
   border: 1px solid #363636;
-  width: 150px;
-  height: 150px;
-  filter: drop-shadow(5px 5px 5px rgb(255, 0, 200));
+  width: 400px;
+  height: 120px;
+  filter: drop-shadow(2px 2px 5px rgb(0, 0, 0));
 }
 
 canvas {
@@ -28,7 +29,7 @@ canvas {
   text-transform: uppercase;
   font-family: "Saira Stencil One", sans-serif;
   font-size: 30vw;
-  color: rgba(95, 115, 123, .25);
+  color: rgba(240, 0, 0, .25);
   text-align: center;
   vertical-align: top;
 }
