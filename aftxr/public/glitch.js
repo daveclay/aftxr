@@ -283,7 +283,14 @@ class PostEffect {
 
 class ConsoleSignature {
     constructor() {
-        this.message = `created by yoichi kobayashi`;
+        this.message = `Glitch CSS/JS created by yoichi kobayashi
+Description : Array and textureless GLSL 2D/3D/4D simplex noise functions
+Author      : Ian McEwan, Ashima Arts.
+Maintainer  : ijm
+Lastmod     : 20110822 (ijm)
+License     : Copyright (C) 2011 Ashima Arts. All rights reserved.
+              Distributed under the MIT License. See LICENSE file.\n
+              https://github.com/ashima/webgl-noise`;
         this.url = `http://www.tplh.net`;
         this.show();
     }
@@ -313,7 +320,8 @@ const debounce = (callback, duration) => {
 };
 
 class Glitch {
-    constructor(element) {
+    constructor(element, imgSrc) {
+        this.imgSrc = imgSrc
         this.canvas = element
         this.renderer = new THREE.WebGLRenderer({
             antialias: false,
@@ -367,7 +375,7 @@ class Glitch {
         this.cameraBack.position.set(0, 0, 100);
         this.cameraBack.lookAt(new THREE.Vector3());
 
-        this.bgImg.init('./osaka01.jpg', () => {
+        this.bgImg.init(this.imgSrc, () => {
             this.sceneBack.add(this.bgImg.obj);
             this.scene.add(this.postEffect.obj);
         })
