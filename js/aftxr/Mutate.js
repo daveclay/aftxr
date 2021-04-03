@@ -470,7 +470,8 @@
 
     fadeOut: function(callback) {
       this.$logo.velocity({
-        opacity: 0
+        opacity: .15,
+        color: "#ff4a00"
       }, {
         duration: 2000,
         complete: function() {

@@ -218,25 +218,27 @@ class PostEffect {
           // Mix final noise value
             vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
             m = m * m;
-            return 42.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1),
+            return 52.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1),
                                           dot(p2,x2), dot(p3,x3) ) );
             }
                     
-          const float interval = 3.0;
+          const float interval = 5.0;
           
           void main(void){
             float strength = smoothstep(interval * 0.5, interval, interval - mod(time, interval));
             vec2 shake = vec2(strength * 8.0 + 0.5) * vec2(
-              random(vec2(time)) * 2.0 - 1.0,
-              random(vec2(time * 2.0)) * 2.0 - 1.0
+              random(vec2(time)) * 10.0 - 1.0,
+              random(vec2(time * 4.0)) * 2.0 - 1.0
             ) / resolution;
           
             float y = vUv.y * resolution.y;
             float rgbWave = (
                 snoise3(vec3(0.0, y * 0.01, time * 400.0)) * (2.0 + strength * 32.0)
-                * snoise3(vec3(0.0, y * 0.02, time * 200.0)) * (1.0 + strength * 4.0)
-                + step(0.9995, sin(y * 0.005 + time * 1.6)) * 12.0
+                * snoise3(vec3(0.0, y * 0.02, time * 2.0)) * (1.0 + strength * 4.0)
+                * snoise3(vec3(0.0, y * 0.03, time * 20.0)) * (1.0 + strength * 2.0)
+                + step(0.995, sin(y * 0.005 + time * 1.6)) * 12.0
                 + step(0.9999, sin(y * 0.005 + time * 2.0)) * -18.0
+                + step(0.9992, sin(y * 0.005 + time * 100.2)) * -15.0
               ) / resolution.x;
             float rgbDiff = (6.0 + sin(time * 500.0 + vUv.y * 40.0) * (20.0 * strength + 1.0)) / resolution.x;
             float rgbUvX = vUv.x + rgbWave;
@@ -244,19 +246,19 @@ class PostEffect {
             float g = texture2D(texture, vec2(rgbUvX, vUv.y) + shake).g;
             float b = texture2D(texture, vec2(rgbUvX - rgbDiff, vUv.y) + shake).b;
           
-            float whiteNoise = (random(vUv + mod(time, 10.0)) * 2.0 - 1.0) * (0.15 + strength * 0.15);
+            float whiteNoise = (random(vUv + mod(time, 10.0)) * 2.0 - 1.0) * (0.15 + strength * 0.35);
           
-            float bnTime = floor(time * 20.0) * 200.0;
+            float bnTime = floor(time * 20.0) * 2000.0;
             float noiseX = step((snoise3(vec3(0.0, vUv.x * 3.0, bnTime)) + 1.0) / 2.0, 0.12 + strength * 0.3);
             float noiseY = step((snoise3(vec3(0.0, vUv.y * 3.0, bnTime)) + 1.0) / 2.0, 0.12 + strength * 0.3);
             float bnMask = noiseX * noiseY;
-            float bnUvX = vUv.x + sin(bnTime) * 0.2 + rgbWave;
+            float bnUvX = vUv.x + sin(bnTime) * 0.03 + rgbWave;
             float bnR = texture2D(texture, vec2(bnUvX + rgbDiff, vUv.y)).r * bnMask;
             float bnG = texture2D(texture, vec2(bnUvX, vUv.y)).g * bnMask;
             float bnB = texture2D(texture, vec2(bnUvX - rgbDiff, vUv.y)).b * bnMask;
             vec4 blockNoise = vec4(bnR, bnG, bnB, 1.0);
           
-            float bnTime2 = floor(time * 25.0) * 300.0;
+            float bnTime2 = floor(time * 25.0) * 3000.0;
             float noiseX2 = step((snoise3(vec3(0.0, vUv.x * 2.0, bnTime2)) + 1.0) / 2.0, 0.12 + strength * 0.5);
             float noiseY2 = step((snoise3(vec3(0.0, vUv.y * 8.0, bnTime2)) + 1.0) / 2.0, 0.12 + strength * 0.3);
             float bnMask2 = noiseX2 * noiseY2;
