@@ -1,36 +1,104 @@
-@import url('https://fonts.googleapis.com/css?family=Saira+Stencil+One');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;700&family=Saira+Stencil+One&display=swap');
 
 body {
   background-color: black;
+  background-size: cover;
+  background-repeat: no-repeat;
+  font-family: 'Roboto Condensed', sans-serif;
+  color: #8b969a;
+  padding: 0;
+  margin: 0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+a {
+  color: #ff4c0a;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.textContent {
+  text-transform: none;
+  margin-top: 1vw;
+  margin-bottom: 1vw;
+  background-color: rgba(0,0,0,.7);
+  padding-top: 1vw;
+  padding-bottom: 1vw;
+  font-size: 11pt;
+  padding-left: 3vw;
+  text-align: left;
+}
+
+.static {
+  background-image: url("./images/static.png");
+  width: 100%;
+  height: 100%;
+  top:0;
+  left:0;
 }
 
 .container {
-  z-index: 200;
-  position: absolute;
-  width: 100%;
+  position: relative;
   text-align: center;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  top:0;
+  left:0;
+  z-index: 10;
+}
+
+.playerContainer {
+  position: relative;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  z-index: 1000;
 }
 
 .playerContainer iframe {
-  margin-left: 4px;
-  margin-right: 4px;
+  margin-left: 2px;
+  margin-right: 2px;
   border: 1px solid #363636;
-  width: 400px;
-  height: 120px;
+  width: 200px;
+  height: 200px;
   filter: drop-shadow(2px 2px 5px rgb(0, 0, 0));
-}
-
-canvas {
-  position: fixed;
-  z-index: 1;
-  top: 0; left: 0;
 }
 
 .logo {
   text-transform: uppercase;
   font-family: "Saira Stencil One", sans-serif;
-  font-size: 30vw;
-  color: rgba(240, 0, 0, .25);
+  font-size: 15vw;
+  color: rgba(154, 119, 89, .32);
   text-align: center;
   vertical-align: top;
+  line-height: 20vw;
+  position: relative;
+  z-index: 10000;
+}
+
+.logo span {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.sourcetag {
+  z-index: 1000;
+  text-transform: uppercase;
+  font-size: 1.2vw;
+  color: rgba(203, 156, 117, 0.25);
+  margin-top: -4.8vw;
+  margin-bottom: 2vw;
+}
+
+#bg-canvas {
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
 }
