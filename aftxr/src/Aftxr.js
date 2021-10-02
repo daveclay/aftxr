@@ -2,12 +2,6 @@ import "./Aftxr.scss"
 import { Component } from "react";
 
 class Aftxr extends Component {
-  componentDidMount() {
-    // const glitch = new window.Glitch(this.canvas)
-    const glitch = new window.Glitch(this.canvas, "./images/backgrounds/hands.jpg")
-    glitch.run()
-  }
-
   render() {
     return (
       <div className="container">
@@ -15,19 +9,11 @@ class Aftxr extends Component {
           <span>A</span>
           <span>F</span>
           <span>T</span>
-          <span>X</span>
+          <span class="x">X</span>
           <span>R</span>
         </div>
         <div className="sourcetag">
           aftxr industrial music oil volume adjusted noise malignant failed state metal ambient source signal.
-        </div>
-        <div className="static">
-
-        </div>
-        <div className="textContent">
-          <div style={{textAlign: "center"}}>
-            An industrial/noise/metal audio project by artist <a href="http://daveclay.com">Dave Clay</a>.
-          </div>
         </div>
         <div className="playerContainer">
           <iframe title="The Faithful"
@@ -50,7 +36,16 @@ class Aftxr extends Component {
                   src="https://bandcamp.com/EmbeddedPlayer/track=1977380926/size=large/artwork=large/bgcol=333333/linkcol=e99708/minimal=true/transparent=true/"
                   seamless><a href="https://aftxr.bandcamp.com/track/vote">Vote</a></iframe>
         </div>
-        <canvas id="bg-canvas" ref={el => (this.canvas = el)} />
+        <div className="textContent">
+          <div>
+            Releases available at <a href="https://aftxr.bandcamp.com">aftxr.bandcamp.com</a>.
+          </div>
+        </div>
+        <div className="textContent">
+          <div>
+            AFTXR is an industrial/noise/metal audio project by artist <a href="http://daveclay.com">Dave Clay</a>.
+          </div>
+        </div>
       </div>
     )
   }
