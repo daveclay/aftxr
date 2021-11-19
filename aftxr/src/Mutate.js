@@ -1,4 +1,5 @@
 import {useSpring, animated} from 'react-spring'
+import { Component } from "react";
 import "./Mutate.scss"
 
 const NUMBER_OF_BITS = 125;
@@ -8,46 +9,64 @@ const BITS = new Array(NUMBER_OF_BITS).fill(0).map((val, i) => ({
   src: `./images/blue-bits/${i}.png`
 }))
 
-function Gene({bit}) {
-  let props = useSpring({
-    from: { left: '0%', top: '0%', width: '0%', height: '0%', background: 'lightgreen' },
-    to: async next => {
-      while (1) {
-        await next({ left: '0%', top: '0%', width: '100%', height: '100%', background: 'lightblue' })
-        await next({ height: '50%', background: 'lightgreen' })
-        await next({ width: '50%', left: '50%', background: 'lightgoldenrodyellow' })
-        await next({ top: '0%', height: '100%', background: 'lightpink' })
-        await next({ top: '50%', height: '50%', background: 'lightsalmon' })
-        await next({ width: '100%', left: '0%', background: 'lightcoral' })
-        await next({ width: '50%', background: 'lightseagreen' })
-        await next({ top: '0%', height: '100%', background: 'lightskyblue' })
-        await next({ width: '100%', background: 'lightslategrey' })
-      }
-    },
-  })
-  return (
-    <animated.div className="bit" style={props}>
-      <img src={`${bit.src}`}/>
-    </animated.div>
-  )
+function bitLoaded(bit, event) {
+  console.log(event, bit)
 }
 
-function Mutate() {
-  let props = useSpring({
-    loop: true,
-    from: { rotateZ: 0 },
-    to: { rotateZ: 360 },
-    config: { duration: 1000 * 900 },
-  })
-  return (
-    <animated.div className="mutator" style={props}>
-      {
-        BITS.map(bit =>
-          <Gene bit={bit} key={bit.index}/>
-        )
+function nextStyle(bit) {
+  let x = Math.round(Math.random() * 500)
+  let y = Math.round(Math.random() * 300)
+  let rotate = Math.round(Math.random() * 180)
+  return {
+    transform: `rotate(${rotate}deg) translate3d(${x}px, ${y}px, 0px)`,
+    opacity: '100%'
+  }
+}
+
+class Gene extends Component {
+  render() {
+    let props = useSpring({
+      from: { opacity: '0%' },
+      to: async next => {
+        while (1) {
+          await next(nextStyle(this.props.bit))
+        }
       }
-    </animated.div>
-  )
+    })
+
+    return (
+      <animated.div className="bit" style={props}>
+        <img src={`${this.props.bit.src}`}
+             onLoad={e => bitLoaded(this.props.bit, e)}
+             alt=""/>
+      </animated.div>
+    )
+  }
+}
+
+class Mutate extends Component {
+  genes = []
+
+  render() {
+    let props = useSpring({
+      loop: true,
+      from: { rotateZ: 0 },
+      to: { rotateZ: 360 },
+      config: { duration: 100000 },
+    })
+
+    return (
+      <animated.div className="mutator" style={props}>
+        {
+          BITS.map((bit, index) =>
+            <Gene bit={bit}
+                  ref={(geneRef) => this.genes[index] = geneRef}
+                  key={bit.index}/>
+          )
+        }
+      </animated.div>
+    )
+  }
 }
 
 export default Mutate

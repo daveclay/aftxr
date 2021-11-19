@@ -3,7 +3,7 @@
 body {
   background-color: black;
   background-size: cover;
-  background-image: url("./images/backgrounds/wires.png");
+  background-image: url("./images/backgrounds/web bg.png");
   background-repeat: no-repeat;
   font-family: 'Roboto Condensed', sans-serif;
   color: #8b969a;
@@ -24,17 +24,14 @@ a:hover {
 }
 
 .textContent {
+  background-color: rgba(0,0,0,.7);
   text-align: center;
   text-transform: none;
-  margin-top: 1vw;
-  margin-bottom: 1vw;
-  background-color: rgba(0,0,0,.7);
   padding-top: 1vw;
   padding-bottom: 1vw;
   font-size: 11pt;
   padding-left: 3vw;
   z-index: 200;
-  position: relative;
 }
 
 .static {
@@ -64,8 +61,9 @@ a:hover {
 }
 
 .playerContainer iframe {
-  margin-left: 2px;
-  margin-right: 2px;
+  margin-left: 12px;
+  margin-right: 12px;
+  margin-bottom: 12px;
   border: 1px solid #363636;
   width: 200px;
   height: 200px;
@@ -76,7 +74,7 @@ a:hover {
   text-transform: uppercase;
   font-family: "Saira Stencil One", sans-serif;
   font-size: 15vw;
-  color: rgba(197, 219, 219, .58);
+  color: rgba(75, 92, 92, .41);
   text-align: center;
   vertical-align: top;
   position: relative;
@@ -84,7 +82,7 @@ a:hover {
 }
 
 .logo .x {
-  color: rgba(175, 152, 136, 0.55);
+  color: rgba(112, 66, 34, .55);
 }
 
 .logo span {
