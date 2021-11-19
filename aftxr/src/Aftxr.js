@@ -1,5 +1,20 @@
 import "./Aftxr.scss"
 import { Component } from "react";
+import noiseImage2 from "./images/web bg - faithful 2.png"
+import noiseImage3 from "./images/web bg - faithful 3.png"
+import noiseImage4 from "./images/web bg - faithful 4.png"
+import noiseImage5 from "./images/web bg - faithful 5.png"
+import noiseImage6 from "./images/web bg - faithful 6.png"
+import noiseImage7 from "./images/web bg - faithful 7.png"
+
+const noiseImages = [
+  noiseImage2,
+  noiseImage3,
+  noiseImage4,
+  noiseImage5,
+  noiseImage6,
+  noiseImage7
+]
 
 class Aftxr extends Component {
   render() {
@@ -11,12 +26,6 @@ class Aftxr extends Component {
           <span>T</span>
           <span className="x">X</span>
           <span>R</span>
-        </div>
-        <div className="textContent">
-          <div>
-            AFTXR is an industrial/noise/metal audio project by artist <a href="http://daveclay.com">Dave Clay</a>.
-            Releases available at <a href="https://aftxr.bandcamp.com">aftxr.bandcamp.com</a>.
-          </div>
         </div>
         <div className="playerContainer">
           <iframe title="The Faithful"
@@ -38,6 +47,13 @@ class Aftxr extends Component {
           <iframe title="Vote"
                   src="https://bandcamp.com/EmbeddedPlayer/track=1977380926/size=large/artwork=large/bgcol=333333/linkcol=e99708/minimal=true/transparent=true/"
                   seamless><a href="https://aftxr.bandcamp.com/track/vote">Vote</a></iframe>
+        </div>
+
+        <div className="textContent">
+          <div>
+            AFTXR is an industrial/noise/metal audio project by artist <a href="http://daveclay.com">Dave Clay</a>.
+            Releases available at <a href="https://aftxr.bandcamp.com">aftxr.bandcamp.com</a>.
+          </div>
         </div>
       </div>
     )

@@ -6,7 +6,7 @@ body {
   background-image: url("./images/backgrounds/web bg.png");
   background-repeat: no-repeat;
   font-family: 'Roboto Condensed', sans-serif;
-  color: #8b969a;
+  color: #4c5049;
   padding: 0;
   margin: 0;
   display:flex;
@@ -15,7 +15,7 @@ body {
 }
 
 a {
-  color: #ff4c0a;
+  color: #d35630;
   text-decoration: none;
 }
 
@@ -73,8 +73,10 @@ a:hover {
 .logo {
   text-transform: uppercase;
   font-family: "Saira Stencil One", sans-serif;
-  font-size: 15vw;
-  color: rgba(75, 92, 92, .41);
+  font-size: 20vw;
+  line-height: 18vw;
+  margin-top: 6vw;
+  color: rgba(155, 171, 144, .18);
   text-align: center;
   vertical-align: top;
   position: relative;
@@ -82,7 +84,6 @@ a:hover {
 }
 
 .logo .x {
-  color: rgba(112, 66, 34, .55);
 }
 
 .logo span {
