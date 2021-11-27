@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;700&family=Saira+Stencil+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;700&family=Saira+Stencil+One&family=Bebas+Neue&display=swap');
 
 body {
   background-color: black;
@@ -14,13 +14,40 @@ body {
   justify-content:center;
 }
 
+.title-font {
+  font-family: "Saira Stencil One", sans-serif;
+}
+
 a {
-  color: #d35630;
+  color: #bf4a11;
   text-decoration: none;
 }
 
 a:hover {
   text-decoration: underline;
+}
+
+.announcement-color {
+  color: #bf4a11;
+}
+
+.announcement {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 32px;
+}
+
+.retailers-list {
+  padding: 0;
+  margin-block: unset;
+}
+
+.retailers-list li {
+  list-style: none;
+  display: block;
+}
+
+.text {
+  font-size: 11pt;
 }
 
 .textContent {
@@ -29,8 +56,6 @@ a:hover {
   text-transform: none;
   padding-top: 1vw;
   padding-bottom: 1vw;
-  font-size: 11pt;
-  padding-left: 3vw;
   z-index: 200;
 }
 
@@ -72,7 +97,6 @@ a:hover {
 
 .logo {
   text-transform: uppercase;
-  font-family: "Saira Stencil One", sans-serif;
   font-size: 20vw;
   line-height: 18vw;
   margin-top: 6vw;

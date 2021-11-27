@@ -20,13 +20,43 @@ class Aftxr extends Component {
   render() {
     return (
       <div className="container">
-        <div className="logo">
+        <div className="logo title-font">
           <span>A</span>
           <span>F</span>
           <span>T</span>
           <span className="x">X</span>
           <span>R</span>
         </div>
+        <div className="textContent">
+          Industrial + Electronic + Noise
+          <br/>
+          <span className="announcement title-font announcement-color">
+            NEW ALBUM
+          </span>
+        </div>
+        <div className="playerContainer">
+          <iframe style={{border: 0, width: 350 + "px", height: 470 + "px"}}
+                  src="https://bandcamp.com/EmbeddedPlayer/album=2393760462/size=large/bgcol=333333/linkcol=e99708/tracklist=false/transparent=true/"
+                  seamless={true}><a href="https://aftxr.bandcamp.com/album/the-blind-king">The Blind King by aftxr</a></iframe>
+        </div>
+        <div className="textContent announcement">
+          AVAILABLE FOR DOWNLOAD AND STREAMING
+          <ul className="retailers-list">
+            <li>
+              <a href="https://aftxr.bandcamp.com/album/the-blind-king">Bandcamp</a>
+            </li>
+            <li>
+              <a href="https://open.spotify.com/album/5kuOnsOoNM9GE2VepeQe6K">Spotify</a>
+            </li>
+            <li>
+              <a href="https://music.apple.com/us/album/the-blind-king/1596777844">Apple Music &amp; iTunes</a>
+            </li>
+            <li>
+              <a href="https://music.youtube.com/playlist?list=OLAK5uy_kMKH6xY1-u8imXnUqenQztuI9uTF9auCQ&feature=share">YouTube Music</a>
+            </li>
+          </ul>
+        </div>
+
         <div className="playerContainer">
           <iframe title="The Faithful"
                   src="https://bandcamp.com/EmbeddedPlayer/album=2960334884/size=large/artwork=large/bgcol=333333/linkcol=e99708/minimal=true/transparent=true/"
